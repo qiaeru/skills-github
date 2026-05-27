@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Fixed
 
-- `committing` example now carries the full `Co-Authored-By: Claude Opus 4.7` trailer instead of an abbreviated one, so following the skill no longer produces commits that diverge from the repo history.
+- `committing` now says to keep the `Co-Authored-By` trailer Claude adds verbatim, without stripping it or hardcoding a model name or version, so commits stay attributed to whichever model actually made them.
 
 ## [1.0.0] - 2026-05-27
 
