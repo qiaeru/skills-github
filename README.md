@@ -1,4 +1,4 @@
-# skills-github
+# Skills GitHub
 
 Reusable Claude Code skills for managing public GitHub repos at commit, push, and release time, plus the generic repo files every project should carry.
 
