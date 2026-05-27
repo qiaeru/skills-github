@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-05-27
+
 ### Changed
 
 - `committing` and `releasing` now write the four-line `Repo profile` marker themselves when it is missing, instead of delegating to the full `scaffolding-repos` skill; `scaffolding-repos` documents this marker-only mode.
