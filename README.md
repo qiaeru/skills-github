@@ -26,22 +26,6 @@ The skill instructions themselves are in English; only the output follows the do
 - **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then tag and publish, following the lock (PR + owner-published Release, or direct tag on `main`). It offers the `gh` CLI for PR and Release creation while keeping the owner as the merge/publish gate in locked repos.
 - **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS and IDE files), the LF-normalizing `.gitattributes`, a Keep a Changelog / SemVer `CHANGELOG.md` in the repo's single language, and the `## Repo profile` marker. It is idempotent and never clobbers existing files without showing a diff first.
 
-## Install into a repo
-
-Claude Code loads per-repo skills from `<repo>/.claude/skills/`. Copy the three skill folders there:
-
-```powershell
-$dest = "C:\path\to\your-repo\.claude\skills"
-New-Item -ItemType Directory -Force $dest | Out-Null
-Copy-Item -Recurse skills\committing        $dest
-Copy-Item -Recurse skills\releasing         $dest
-Copy-Item -Recurse skills\scaffolding-repos $dest
-```
-
-Restart Claude Code so the skills are detected. Then, in that repo, invoke `scaffolding-repos` once to lay down the generic files and write the `## Repo profile` marker. After that, `committing` and `releasing` read the marker and adapt automatically.
-
-When you change a skill in this repo, re-copy it into the target repos and restart Claude Code; skills are not hot-reloaded.
-
 ## Layout
 
 ```text
@@ -65,6 +49,39 @@ skills-github/
             ├── gitignore       # renamed to .gitignore on install
             └── gitattributes   # renamed to .gitattributes on install
 ```
+
+## Installation
+
+Claude Code loads a project's skills from the `.claude/skills/` folder at the root of that project, and global skills from `~/.claude/skills/`.
+
+The repo is organized so each skill copies as one block. The [skills/](skills/) folder holds `committing/`, `releasing/` and `scaffolding-repos/`, each already under the exact name Claude Code expects.
+
+To install them in a project, copy the three folders into that project's `.claude/skills/` directory, creating that directory if it does not exist. For an installation that applies to all your projects, copy the same folders into `~/.claude/skills/` instead.
+
+Restart Claude Code so the skills are detected. You can confirm they were picked up by asking Claude for the list of available skills or by invoking one by name. Then, in the target repo, invoke `scaffolding-repos` once to lay down the generic files and write the `## Repo profile` marker; after that, `committing` and `releasing` read the marker and adapt automatically.
+
+When you change a skill in this repo, re-copy its folder into the target project's `.claude/skills/` (or its global equivalent) and restart Claude Code, since skill content is not hot-reloaded.
+
+## Usage
+
+Once the skills are installed and Claude Code is restarted, Claude uses them in three ways.
+
+- When you name a skill explicitly ("run `committing` before I push", "cut a release with `releasing`", "scaffold this repo with `scaffolding-repos`"), Claude loads its `SKILL.md` and follows the checklist step by step. This is the most reliable path when you want the full pass.
+- When you ask for the underlying action without naming the skill ("commit this", "ship a new version", "set up the repo files"), Claude recognizes the context from the skill's `description` frontmatter and invokes it on its own. You can confirm by asking which skill it just applied.
+- The three skills chain. `scaffolding-repos` writes the `## Repo profile` marker, then `committing` and `releasing` read it to pick the Git workflow and the docs language. `releasing` also reuses the CHANGELOG tightening rule from `committing`, so a release stays consistent with everyday commits.
+
+## Limits
+
+These skills handle Git and GitHub hygiene, not the substance of your work. A few things they deliberately leave to you:
+
+- They do not run your build or your tests. They assume you verify the code yourself before asking for a commit or a release; they only gate the docs, the commit message, the CHANGELOG and the release mechanics.
+- They do not judge the code. They check comments, docs freshness and conventional-commit form, not correctness, design or factual accuracy.
+- They model two axes only, `Lock` and `Docs language`. A repo whose workflow falls outside them (a monorepo release train, a signed-tag policy, a non-`main` default branch) may need manual steps the skills do not cover.
+- Docs language is `en` or `fr`. Other languages are not supported.
+
+## Quick test
+
+To confirm the skills are loaded, ask Claude to list the available skills, or invoke one by name. The clearest check: in a repo where you copied the folders, ask Claude to "scaffold this repo with `scaffolding-repos`" and watch it lay down the generic files and write the `## Repo profile` marker. If instead Claude improvises its own `.gitignore` or asks what a Repo profile is, the skills were not detected: re-copy the folders into `.claude/skills/` and restart Claude Code.
 
 ## License
 
