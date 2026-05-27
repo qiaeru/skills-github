@@ -94,3 +94,9 @@ exists). `CLAUDE.md` is gitignored, so the marker stays local. The `committing` 
 ```
 
 Set the two values to the profile from step 1.
+
+**Marker-only mode.** When `committing` or `releasing` only need the profile recorded and the
+repo already has its other generic files, write just this section into the root `CLAUDE.md`
+directly; do not run the rest of this skill. Those skills do this inline, so the full
+scaffold is reserved for a repo that genuinely needs its generic files installed or
+refreshed.

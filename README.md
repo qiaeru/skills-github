@@ -74,7 +74,7 @@ Once the skills are installed and Claude Code is restarted, Claude uses them in 
 
 These skills handle Git and GitHub hygiene, not the substance of your work. A few things they deliberately leave to you:
 
-- They do not run your build or your tests. They assume you verify the code yourself before asking for a commit or a release; they only gate the docs, the commit message, the CHANGELOG and the release mechanics.
+- They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
 - They do not judge the code. They check comments, docs freshness and conventional-commit form, not correctness, design or factual accuracy.
 - They model two axes only, `Lock` and `Docs language`. A repo whose workflow falls outside them (a monorepo release train, a signed-tag policy, a non-`main` default branch) may need manual steps the skills do not cover.
 - Docs language is `en` or `fr`. Other languages are not supported.

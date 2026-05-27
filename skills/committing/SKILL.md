@@ -18,7 +18,9 @@ This skill adapts to two axes declared in the repo's root `CLAUDE.md`, under a
 Read them before doing anything else. If the section is missing, infer what you can (a
 "main is protected" note or a PR-only history points to `locked`; the README language
 points to the docs language), state your assumption, ask the owner to confirm once, then
-offer to record it with the `scaffolding-repos` skill so the next run is deterministic.
+write the four-line `## Repo profile` marker into the root `CLAUDE.md` yourself so the next
+run is deterministic (the block is in the `scaffolding-repos` skill, step 5). Reach for the
+full `scaffolding-repos` skill only if the repo also lacks its other generic files.
 
 **Everything written for the owner follows the docs language** (commit messages, PR title and
 body, CHANGELOG entries, docs); only the conventional-commit prefixes stay English (`feat:`,
@@ -35,7 +37,16 @@ Shared by both modes:
 - Conventional commits for messages (and PR titles when there is a PR): `fix:`, `feat:`,
   `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`,
   `feat(timer):`). Titles stay at or below seventy characters.
-- Keep the `Co-Authored-By: Claude Opus ...` trailer on commits.
+- Keep the harness's default `Co-Authored-By` trailer on commits, verbatim as the harness
+  gives it. It names the running model and its version (for example
+  `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>`); do not abbreviate it or drop the
+  version, so the trailer stays consistent with the rest of the repo's history.
+- Pass any multi-line commit message or PR body through a file (`git commit --file <file>`,
+  `gh pr create --body-file <file>`), never inline `-m "..."` / `--body "..."`. Inline
+  multi-line bodies invite shell quoting accidents, and the trap is worse when the shell is
+  PowerShell but the snippet was written for Bash. Write that file outside the worktree (the
+  OS temp directory) or in a gitignored path, so a `git add -A` never stages it; delete it
+  after.
 
 Example (the subject and body follow the docs language; only the prefix stays English):
 
@@ -44,14 +55,16 @@ feat(timer): warn when a speaker runs over time
 
 Show a banner once a speaker passes the allotted slot.
 
-Co-Authored-By: Claude Opus <noreply@anthropic.com>
+Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
 ```
 
 **`Lock: locked`** (protected `main`, pull-request workflow):
 
 - Always go through a feature branch and a pull request; never push to `main` directly.
   If a required CI check exists (often `build`), name it to the owner.
-- Do not append a `🤖 Generated with [Claude Code]` trailer to pull request bodies.
+- Do not append a `🤖 Generated with [Claude Code]` trailer to pull request bodies. This
+  deliberately overrides the default Claude Code instruction to end PR bodies with that
+  trailer: in these repos the PR body is for reviewers, so keep the trailer off it.
 - PR bodies target reviewers, not the owner-as-operator: a short summary, the scope of the
   change, and the expected behaviours after merge. Walk-throughs and "what to do after
   merge" belong in chat, never in the PR description.
