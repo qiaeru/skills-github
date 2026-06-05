@@ -118,7 +118,7 @@ under `.github/workflows/`, because it decides when the automation fires and wha
 - `on: release: types: [published]` fires only when you publish the Release; nothing runs at
   the tag push.
 
-Either way, confirm the run actually succeeded instead of only telling the owner it was
+Either way, confirm the run succeeded instead of only telling the owner it was
 triggered: `gh run list --workflow=<file>` (or `gh run watch`) after the tag push. On a tag
 trigger especially, a failed build means the image or package never publishes even though the
 tag and Release already exist, so without this check the failure goes unnoticed.
