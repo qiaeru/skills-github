@@ -31,14 +31,14 @@ These two files live next to this skill, in `templates/`. Copy and rename:
 The rules are identical in every language; only the comments differ. The template comments
 are English. For a `fr` repo, swap each comment line using this table:
 
-| English comment                                                  | French comment                                                       |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `# Claude Code working files, local to the dev machine.`         | `# Fichiers de travail Claude Code, internes au poste de développement.` |
-| `# Operating systems.`                                           | `# Systèmes d'exploitation.`                                         |
-| `# Editors and IDEs.`                                            | `# Éditeurs et IDE.`                                                 |
-| `# Backups and temporary files.`                                 | `# Sauvegardes et fichiers temporaires.`                            |
-| `# Normalize line endings to LF for every text file, any OS.`    | `# Normalise les fins de ligne en LF pour tout fichier texte, quel que soit l'OS.` |
-| `# Binary assets: never touch these even if git guesses wrong.`  | `# Fichiers binaires : git n'y touche jamais, même s'il se trompe.` |
+| English comment | French comment |
+| --- | --- |
+| `# Claude Code working files, local to the dev machine.` | `# Fichiers de travail Claude Code, internes au poste de développement.` |
+| `# Operating systems.` | `# Systèmes d'exploitation.` |
+| `# Editors and IDEs.` | `# Éditeurs et IDE.` |
+| `# Backups and temporary files.` | `# Sauvegardes et fichiers temporaires.` |
+| `# Normalize line endings to LF for every text file, any OS.` | `# Normalise les fins de ligne en LF pour tout fichier texte, quel que soit l'OS.` |
+| `# Binary assets: never touch these even if git guesses wrong.` | `# Fichiers binaires : git n'y touche jamais, même s'il se trompe.` |
 
 ## 3. Create `CHANGELOG.md`
 
