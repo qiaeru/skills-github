@@ -1,0 +1,13 @@
+{
+  "name": "qiaeru-skills",
+  "owner": {
+    "name": "qiaeru"
+  },
+  "plugins": [
+    {
+      "name": "skills-github",
+      "source": "./",
+      "description": "Skills for managing public GitHub repos: pre-commit checklist, release procedure, and repo scaffolding."
+    }
+  ]
+}

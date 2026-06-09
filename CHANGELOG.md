@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- The repo now installs as a Claude Code plugin (`.claude-plugin/` manifest and marketplace), as an alternative to copying the skill folders by hand; `releasing` lists the plugin manifest among the version files to bump.
+
 ### Changed
 
 - `scaffolding-repos` ships the CHANGELOG boilerplates as template files (`templates/CHANGELOG.en.md` / `CHANGELOG.fr.md`) instead of inline blocks in the skill.

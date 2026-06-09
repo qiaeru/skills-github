@@ -27,6 +27,7 @@ Find where the version lives and bump it:
 
   No dependency changes belong in a release commit.
 - Other ecosystems: `pyproject.toml` / `Cargo.toml` / `*.csproj` / `composer.json` and their lockfiles, as applicable.
+- Claude Code plugin: bump `version` in `.claude-plugin/plugin.json`.
 - Content-only repos (a skill, docs): there is no manifest. The **tag is the version**; there is nothing to bump.
 
 ## 3. Promote the CHANGELOG
