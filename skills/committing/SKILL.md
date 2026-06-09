@@ -24,17 +24,17 @@ Shared by both modes:
 
 - One commit per concern: one feature, one bugfix, one refactor. Never bundle unrelated changes in the same commit, because the owner relies on atomic commits to review and revert.
 - Conventional commits for messages (and PR titles when there is a PR): `fix:`, `feat:`, `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`, `feat(timer):`). Titles stay at or below seventy characters.
-- Keep the `Co-Authored-By` trailer Claude adds to each commit, exactly as the harness wrote it; never strip it. It names whichever model authored the commit, so never hardcode, abbreviate, or swap the model name or version. A fixed string would mislabel commits made by a different model, so just leave what the harness appended.
+- Keep the `Co-Authored-By` trailer the harness adds to each commit, exactly as written; never strip it. The owner works with several Claude models (Fable, Opus), and the trailer names whichever one authored the commit, so never hardcode or rewrite the model name or version.
 - Pass any multi-line commit message or PR body through a file (`git commit --file <file>`, `gh pr create --body-file <file>`), never inline `-m "..."` / `--body "..."`. Inline multi-line bodies invite shell quoting accidents, and the trap is worse when the shell is PowerShell but the snippet was written for Bash. Write that file outside the worktree (the OS temp directory) or in a gitignored path, so a `git add -A` never stages it; delete it after.
 
-Example (the subject and body follow the docs language; only the prefix stays English). The `Co-Authored-By` line is whatever the harness appends for the running model, kept verbatim; the version below is only illustrative, not a string to hardcode:
+Example (the subject and body follow the docs language; only the prefix stays English):
 
 ```text
 feat(timer): warn when a speaker runs over time
 
 Show a banner once a speaker passes the allotted slot.
 
-Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
+Co-Authored-By: <the trailer exactly as the harness wrote it>
 ```
 
 **`Lock: locked`** (protected `main`, pull-request workflow):
