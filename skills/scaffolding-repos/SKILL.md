@@ -36,31 +36,12 @@ The rules are identical in every language; only the comments differ. The templat
 
 ## 3. Create `CHANGELOG.md`
 
-If there is no `CHANGELOG.md`, create one from the boilerplate for the docs language. The repo is mono-language: write only one language, never both. Then start tracking changes under `[Unreleased]` with the localized change-type names (see the `committing` skill).
+If there is no `CHANGELOG.md`, create one from the boilerplate for the docs language, which lives next to this skill in `templates/`:
 
-`en`:
+- `templates/CHANGELOG.en.md` -> `CHANGELOG.md`
+- `templates/CHANGELOG.fr.md` -> `CHANGELOG.md`
 
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-```
-
-`fr`:
-
-```markdown
-# Journal des modifications
-
-Toutes les modifications notables apportées à ce projet seront consignées dans ce fichier.
-
-Le format suit la convention [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), et le projet respecte le [versionnage sémantique](https://semver.org/lang/fr/).
-
-## [Unreleased]
-```
+The repo is mono-language: install only the one matching the docs language, never both. Then start tracking changes under `[Unreleased]` with the localized change-type names (see the `committing` skill).
 
 ## 4. Append ecosystem entries
 

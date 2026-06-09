@@ -47,7 +47,9 @@ skills-github/
         ├── SKILL.md
         └── templates/
             ├── gitignore       # renamed to .gitignore on install
-            └── gitattributes   # renamed to .gitattributes on install
+            ├── gitattributes   # renamed to .gitattributes on install
+            ├── CHANGELOG.en.md # renamed to CHANGELOG.md on install (en repos)
+            └── CHANGELOG.fr.md # renamed to CHANGELOG.md on install (fr repos)
 ```
 
 ## Installation
@@ -58,9 +60,11 @@ The repo is organized so each skill copies as one block. The [skills/](skills/) 
 
 To install them in a project, copy the three folders into that project's `.claude/skills/` directory, creating that directory if it does not exist. For an installation that applies to all your projects, copy the same folders into `~/.claude/skills/` instead.
 
-Restart Claude Code so the skills are detected. You can confirm they were picked up by asking Claude for the list of available skills or by invoking one by name. Then, in the target repo, invoke `scaffolding-repos` once to lay down the generic files and write the `## Repo profile` marker; after that, `committing` and `releasing` read the marker and adapt automatically.
-
 When you change a skill in this repo, re-copy its folder into the target project's `.claude/skills/` (or its global equivalent) and restart Claude Code, since skill content is not hot-reloaded.
+
+### First run
+
+Restart Claude Code so the skills are detected. You can confirm they were picked up by asking Claude for the list of available skills or by invoking one by name. Then, in the target repo, invoke `scaffolding-repos` once to lay down the generic files and write the `## Repo profile` marker; after that, `committing` and `releasing` read the marker and adapt automatically.
 
 ## Usage
 

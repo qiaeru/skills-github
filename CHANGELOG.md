@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `scaffolding-repos` ships the CHANGELOG boilerplates as template files (`templates/CHANGELOG.en.md` / `CHANGELOG.fr.md`) instead of inline blocks in the skill.
 - `committing` condenses the `Co-Authored-By` rule and uses a model-neutral example trailer, since commits may come from different Claude models (Fable, Opus).
 
 ## [1.1.1] - 2026-06-05
