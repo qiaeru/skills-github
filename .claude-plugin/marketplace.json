@@ -1,7 +1,10 @@
 {
-  "name": "qiaeru-skills",
+  "name": "skills-github",
   "owner": {
-    "name": "qiaeru"
+    "name": "Qiaeru"
+  },
+  "metadata": {
+    "description": "Marketplace for the skills-github plugin: pre-commit checklist, release procedure, and repo scaffolding for public GitHub repos."
   },
   "plugins": [
     {

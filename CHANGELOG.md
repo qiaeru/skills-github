@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- The repo now installs as a Claude Code plugin (`.claude-plugin/` manifest and marketplace), the recommended path; copying the skill folders by hand stays as a fallback. `releasing` lists the plugin manifest among the version files to bump.
+- The repo now installs as a Claude Code plugin (`skills-github`) and is its own marketplace, installable with `/plugin marketplace add qiaeru/skills-github` then `/plugin install skills-github@skills-github`, with updates through `/plugin update`; copying the skill folders by hand stays as a fallback. `releasing` lists the plugin manifest among the version files to bump.
 
 ### Changed
 

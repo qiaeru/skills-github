@@ -55,6 +55,8 @@ skills-github/
             └── CHANGELOG.fr.md # renamed to CHANGELOG.md on install (fr repos)
 ```
 
+The repository doubles as a Claude Code plugin named `skills-github` and as its own plugin marketplace: `plugin.json` describes the plugin (the whole repository, with the skills under `skills/`), and `marketplace.json` lists it so Claude Code can install and update it straight from GitHub.
+
 ## Installation
 
 The recommended path is the Claude Code plugin; copying the folders by hand stays available as a fallback. The two modes coexist: the `.claude-plugin/` manifest does not interfere with a manual copy into `.claude/skills/`.
@@ -65,10 +67,10 @@ The repo carries a `.claude-plugin/` manifest, so Claude Code can install it dir
 
 ```text
 /plugin marketplace add qiaeru/skills-github
-/plugin install skills-github@qiaeru-skills
+/plugin install skills-github@skills-github
 ```
 
-The plugin brings the three skills with it. Its `version` follows the repo's releases, bumped by `releasing` alongside the CHANGELOG. To pick up a new version later, update the marketplace (`/plugin marketplace update qiaeru-skills`) instead of re-copying anything.
+The plugin brings the three skills with it. Its `version` follows the repo's releases, bumped by `releasing` alongside the CHANGELOG. When a new version is published, update with `/plugin update skills-github`, or let Claude Code's automatic update pick it up, instead of re-copying anything.
 
 ### By copying the folders (fallback)
 
