@@ -57,9 +57,9 @@ skills-github/
 
 ## Installation
 
-There are two ways to install the skills: as a Claude Code plugin (recommended, updates come with the repo) or by copying the folders by hand.
+The recommended path is the Claude Code plugin; copying the folders by hand stays available as a fallback. The two modes coexist: the `.claude-plugin/` manifest does not interfere with a manual copy into `.claude/skills/`.
 
-### As a plugin
+### As a plugin (recommended)
 
 The repo carries a `.claude-plugin/` manifest, so Claude Code can install it directly from GitHub. In Claude Code, run:
 
@@ -68,9 +68,9 @@ The repo carries a `.claude-plugin/` manifest, so Claude Code can install it dir
 /plugin install skills-github@qiaeru-skills
 ```
 
-The plugin brings the three skills with it. To pick up a new version later, update the marketplace (`/plugin marketplace update qiaeru-skills`) instead of re-copying anything.
+The plugin brings the three skills with it. Its `version` follows the repo's releases, bumped by `releasing` alongside the CHANGELOG. To pick up a new version later, update the marketplace (`/plugin marketplace update qiaeru-skills`) instead of re-copying anything.
 
-### By copying the folders
+### By copying the folders (fallback)
 
 Claude Code loads a project's skills from the `.claude/skills/` folder at the root of that project, and global skills from `~/.claude/skills/`.
 
