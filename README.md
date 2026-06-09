@@ -30,17 +30,16 @@ The skill instructions themselves are in English; only the output follows the do
 
 ```text
 skills-github/
-├── README.md
-├── CHANGELOG.md
-├── CLAUDE.md                   # gitignored, dev notes + this repo's Repo profile
-├── LICENSE
-├── .gitignore
-├── .gitattributes
+├── .claude-plugin/
+│   ├── plugin.json
+│   └── marketplace.json
 ├── .github/
 │   └── FUNDING.yml
-├── .claude-plugin/
-│   ├── plugin.json             # makes the repo installable as a Claude Code plugin
-│   └── marketplace.json
+├── .gitattributes
+├── .gitignore
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
 └── skills/
     ├── committing/
     │   └── SKILL.md
@@ -49,11 +48,13 @@ skills-github/
     └── scaffolding-repos/
         ├── SKILL.md
         └── templates/
-            ├── gitignore       # renamed to .gitignore on install
-            ├── gitattributes   # renamed to .gitattributes on install
-            ├── CHANGELOG.en.md # renamed to CHANGELOG.md on install (en repos)
-            └── CHANGELOG.fr.md # renamed to CHANGELOG.md on install (fr repos)
+            ├── gitignore
+            ├── gitattributes
+            ├── CHANGELOG.en.md
+            └── CHANGELOG.fr.md
 ```
+
+The template files under `scaffolding-repos/templates/` are stored without their final names so git tracks them; `scaffolding-repos` renames them on install (`gitignore` and `gitattributes` gain their leading dot, `CHANGELOG.en.md` or `CHANGELOG.fr.md` becomes `CHANGELOG.md` depending on the repo's docs language).
 
 The repository doubles as a Claude Code plugin named `skills-github` and as its own plugin marketplace: `plugin.json` describes the plugin (the whole repository, with the skills under `skills/`), and `marketplace.json` lists it so Claude Code can install and update it straight from GitHub.
 
