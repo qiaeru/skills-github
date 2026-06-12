@@ -26,6 +26,7 @@ Shared by both modes:
 - Conventional commits for messages (and PR titles when there is a PR): `fix:`, `feat:`, `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`, `feat(timer):`). Titles stay at or below seventy characters.
 - Keep the `Co-Authored-By` trailer the harness adds to each commit, exactly as written; never strip it. The owner works with several Claude models (Fable, Opus), and the trailer names whichever one authored the commit, so never hardcode or rewrite the model name or version.
 - Pass any multi-line commit message or PR body through a file (`git commit --file <file>`, `gh pr create --body-file <file>`), never inline `-m "..."` / `--body "..."`. Inline multi-line bodies invite shell quoting accidents, and the trap is worse when the shell is PowerShell but the snippet was written for Bash. Write that file outside the worktree (the OS temp directory) or in a gitignored path, so a `git add -A` never stages it; delete it after.
+- These repos are public, so before pushing scan the outgoing diff for anything that must not ship: API keys and tokens, `.env` contents, absolute local paths, personal email addresses. Also check `git status` for unintended staged files (build artifacts, local config, editor leftovers). A secret that reaches a public remote is compromised even if a later commit removes it: it has to be rotated, so catching it here is the cheap moment.
 
 Example (the subject and body follow the docs language; only the prefix stays English):
 
@@ -46,12 +47,12 @@ Co-Authored-By: <the trailer exactly as the harness wrote it>
 
 **`Lock: free`** (commit straight to `main`):
 
-- Commit on `main` and push. No feature branch, no pull request, unless the owner asks for one for a specific change.
+- Commit on `main` and push. No feature branch, no pull request, unless the owner asks for one for a specific change. If the push is rejected because the remote moved, `git pull --rebase` then push again; never create a merge commit just to get a push through.
 - Same atomicity and conventional-commit rules as above.
 
 ## 2. Prune the comments in the diff
 
-These repos are public, so the bar is "strictly useful". Run `git diff <base>..HEAD` (locked: `<base>` is the branch point off `main`; free: the last pushed commit) and decide keep-or-delete on each added `/* */`, `//` or `<!-- -->` block. Keep only the comments that explain a non-obvious *why*: a hidden constraint, a subtle invariant, a deliberate workaround. Delete paraphrases of code, lists of selectors or callers, and design-journal remarks. When in doubt, remove the comment. Then confirm the surviving comments are still accurate (no stale references to renamed symbols or removed code paths).
+These repos are public, so the bar is "strictly useful". Run `git diff <base>` (locked: `<base>` is the branch point off `main`, `git merge-base origin/main HEAD`; free: the last pushed commit, `@{u}`), which also covers staged and not-yet-committed changes since this pass runs before the commit, and decide keep-or-delete on each added comment block, whatever the syntax (`/* */`, `//`, `#`, `<!-- -->`). Keep only the comments that explain a non-obvious *why*: a hidden constraint, a subtle invariant, a deliberate workaround. Delete paraphrases of code, lists of selectors or callers, and design-journal remarks. When in doubt, remove the comment. Then confirm the surviving comments are still accurate (no stale references to renamed symbols or removed code paths).
 
 ## 3. Keep the docs current
 
