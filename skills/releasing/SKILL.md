@@ -27,7 +27,7 @@ Find where the version lives and bump it:
 
   No dependency changes belong in a release commit.
 - Other ecosystems: `pyproject.toml` / `Cargo.toml` / `*.csproj` / `composer.json` and their lockfiles, as applicable.
-- Claude Code plugin: bump `version` in `.claude-plugin/plugin.json`.
+- Claude Code plugin: bump `version` in `.claude-plugin/plugin.json`, then validate the manifest (`claude plugin validate .`, or `npx -y @anthropic-ai/claude-code plugin validate .` when the CLI is not on PATH).
 - Content-only repos (a skill, docs): there is no manifest. The **tag is the version**; there is nothing to bump.
 
 ## 3. Promote the CHANGELOG
@@ -38,7 +38,7 @@ For example, a `## [Unreleased]` carrying this session's bullets becomes `## [1.
 
 ## 4. Commit, then follow the lock
 
-Make one commit: `chore(release): cut version X.Y.Z` (conventional, `Co-Authored-By` trailer kept).
+Make one commit: `chore(release): cut version X.Y.Z` (conventional, `Co-Authored-By` trailer kept). Before tagging, confirm the tag number, the manifest version(s) just bumped, and the new CHANGELOG heading all carry the same `X.Y.Z`; a mismatch here is the classic release-day bug and is painful to fix once the tag is public.
 
 **`Lock: locked`:**
 

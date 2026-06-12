@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `scaffolding-repos` ships the CHANGELOG boilerplates as template files (`templates/CHANGELOG.en.md` / `CHANGELOG.fr.md`) instead of inline blocks in the skill.
 - `committing` condenses the `Co-Authored-By` rule and uses a model-neutral example trailer, since commits may come from different Claude models (Fable, Opus).
 - `committing` adds a pre-push scan for secrets and unintended staged files, names the diff-base commands (`git merge-base origin/main HEAD` when locked, `@{u}` when free), recovers a rejected free-mode push with `git pull --rebase`, and prunes every comment syntax (`#` included).
+- `releasing` validates the plugin manifest after bumping its version, and checks that the tag, the manifest(s), and the new CHANGELOG heading agree on the version before tagging.
 
 ## [1.1.1] - 2026-06-05
 
