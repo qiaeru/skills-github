@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-12
+
 ### Added
 
 - The repo now installs as a Claude Code plugin (`skills-github`) and is its own marketplace, installable with `/plugin marketplace add qiaeru/skills-github` then `/plugin install skills-github@skills-github`, with updates through `/plugin update`; copying the skill folders by hand stays as a fallback. `releasing` lists the plugin manifest among the version files to bump.
