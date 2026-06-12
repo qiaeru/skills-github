@@ -34,6 +34,8 @@ The rules are identical in every language; only the comments differ. The templat
 | `# Normalize line endings to LF for every text file, any OS.` | `# Normalise les fins de ligne en LF pour tout fichier texte, quel que soit l'OS.` |
 | `# Binary assets: never touch these even if git guesses wrong.` | `# Fichiers binaires : git n'y touche jamais, même s'il se trompe.` |
 
+When `.gitattributes` lands in a repo that already has commits, the new rules do not rewrite the files already in the index on their own. Run `git add --renormalize .` afterwards and look at `git status`: if files were renormalized, commit them separately (`chore: normalize line endings`) so the line-ending noise never mixes with a real change.
+
 ## 3. Create `CHANGELOG.md`
 
 If there is no `CHANGELOG.md`, create one from the boilerplate for the docs language, which lives next to this skill in `templates/`:
@@ -49,6 +51,7 @@ The generic `.gitignore` only covers the universal set (Claude files, OS, IDE, b
 
 - Node: `node_modules/`, `dist/`, `build/`, `*.log`, `*.tsbuildinfo`, `coverage/`, `.env`, `.env.local`
 - Python: `__pycache__/`, `*.pyc`, `.venv/`, `.pytest_cache/`, `dist/`, `*.egg-info/`
+- Rust: `target/`
 - Always, if relevant: `.env` and any secret or local database files.
 
 ## 5. Write the Repo profile marker

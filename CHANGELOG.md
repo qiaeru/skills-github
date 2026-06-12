@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `committing` condenses the `Co-Authored-By` rule and uses a model-neutral example trailer, since commits may come from different Claude models (Fable, Opus).
 - `committing` adds a pre-push scan for secrets and unintended staged files, names the diff-base commands (`git merge-base origin/main HEAD` when locked, `@{u}` when free), recovers a rejected free-mode push with `git pull --rebase`, and prunes every comment syntax (`#` included).
 - `releasing` validates the plugin manifest after bumping its version, and checks that the tag, the manifest(s), and the new CHANGELOG heading agree on the version before tagging.
+- The `scaffolding-repos` templates ignore macOS `._*`, KDE `.directory`, and Zed `.zed/` files, and mark more binary types in `.gitattributes` (avif, mp3, mp4, ttf, otf, gz).
+- `scaffolding-repos` runs `git add --renormalize .` after installing `.gitattributes` into a repo that already has commits, with the normalization committed separately; its ecosystem examples gain Rust.
 
 ## [1.1.1] - 2026-06-05
 

@@ -7,8 +7,14 @@
 *.jpeg  binary
 *.gif   binary
 *.webp  binary
+*.avif  binary
 *.ico   binary
 *.pdf   binary
 *.zip   binary
+*.gz    binary
+*.mp3   binary
+*.mp4   binary
+*.ttf   binary
+*.otf   binary
 *.woff  binary
 *.woff2 binary
