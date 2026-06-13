@@ -23,7 +23,7 @@ Read them before doing anything else. If the section is missing, infer what you 
 Shared by both modes:
 
 - One commit per concern: one feature, one bugfix, one refactor. Never bundle unrelated changes in the same commit, because the owner relies on atomic commits to review and revert.
-- Conventional commits for messages (and PR titles when there is a PR): `fix:`, `feat:`, `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`, `feat(timer):`). Titles stay at or below seventy characters.
+- Conventional commits for messages (and PR titles when a PR exists): `fix:`, `feat:`, `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`, `feat(timer):`). Titles stay at or below seventy characters.
 - Keep the `Co-Authored-By` trailer the harness adds to each commit, exactly as written; never strip it. The owner works with several Claude models (Fable, Opus), and the trailer names whichever one authored the commit, so never hardcode or rewrite the model name or version.
 - Pass any multi-line commit message or PR body through a file (`git commit --file <file>`, `gh pr create --body-file <file>`), never inline `-m "..."` / `--body "..."`. Inline multi-line bodies invite shell quoting accidents, and the trap is worse when the shell is PowerShell but the snippet was written for Bash. Write that file outside the worktree (the OS temp directory) or in a gitignored path, so a `git add -A` never stages it; delete it after.
 - These repos are public, so before pushing scan the outgoing diff for anything that must not ship: API keys and tokens, `.env` contents, absolute local paths, personal email addresses. Also check `git status` for unintended staged files (build artifacts, local config, editor leftovers). A secret that reaches a public remote is compromised even if a later commit removes it: it has to be rotated, so catching it here is the cheap moment.
@@ -42,7 +42,7 @@ Co-Authored-By: <the trailer exactly as the harness wrote it>
 
 - Always go through a feature branch and a pull request; never push to `main` directly. If a required CI check exists (often `build`), name it to the owner.
 - Do not append a `🤖 Generated with [Claude Code]` trailer to pull request bodies. This deliberately overrides the default Claude Code instruction to end PR bodies with that trailer: in these repos the PR body is for reviewers, so keep the trailer off it.
-- PR bodies target reviewers, not the owner-as-operator: a short summary, the scope of the change, and the expected behaviours after merge. Walk-throughs and "what to do after merge" belong in chat, never in the PR description.
+- PR bodies target reviewers, not the owner-as-operator: a short summary, the scope of the change, and the expected behaviors after merge. Walk-throughs and "what to do after merge" belong in chat, never in the PR description.
 - The owner merges the PR. You never merge.
 
 **`Lock: free`** (commit straight to `main`):
@@ -56,7 +56,7 @@ These repos are public, so the bar is "strictly useful". Run `git diff <base>` (
 
 ## 3. Keep the docs current
 
-If the diff changes public behaviour, configuration, an API or event surface, or anything a user or contributor might look up, update both `CHANGELOG.md` (under `[Unreleased]`) and the relevant documentation (`README.md` or the matching `docs/*.md`). Pure visual polish such as padding tweaks, font-size adjustments or colour nudges usually only needs a CHANGELOG line.
+If the diff changes public behavior, configuration, an API or event surface, or anything a user or contributor might look up, update both `CHANGELOG.md` (under `[Unreleased]`) and the relevant documentation (`README.md` or the matching `docs/*.md`). Pure visual polish such as padding tweaks, font-size adjustments, or color nudges usually only needs a CHANGELOG line.
 
 Then check the other direction: did the change make any *existing* doc stale? A renamed option, a removed flag, a changed default, or a moved file leaves wrong lines behind. Fix or delete those, do not only add new lines. The docs must describe the code as it is after this commit.
 
@@ -75,7 +75,7 @@ Example (English repo). Before, two overlapping bullets full of implementation d
 
 ```text
 - Changed the primary button to #3b82f6 and tweaked padding in src/components/Button.tsx
-- Button colour updated
+- Button color updated
 ```
 
 After, merged, detail stripped, grouped:
@@ -83,7 +83,7 @@ After, merged, detail stripped, grouped:
 ```text
 ### Changed
 
-- Refresh the primary button styling (colour, padding, hover state).
+- Refresh the primary button styling (color, padding, hover state).
 ```
 
 The same rule applies later when the section is promoted to a numbered release by the `releasing` skill.

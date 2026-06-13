@@ -24,7 +24,7 @@ The skill instructions themselves are in English; only the output follows the do
 
 - **`committing`** is the checklist to run before every commit and push: Git workflow rules (branching vs direct-to-main per the lock, conventional commits, PR body style), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the `[Unreleased]` CHANGELOG section.
 - **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then tag and publish, following the lock (PR + owner-published Release, or direct tag on `main`). It offers the `gh` CLI for PR and Release creation while keeping the owner as the merge/publish gate in locked repos.
-- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS and IDE files), the LF-normalizing `.gitattributes`, a Keep a Changelog / SemVer `CHANGELOG.md` in the repo's single language, and the `## Repo profile` marker. It is idempotent and never clobbers existing files without showing a diff first.
+- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, a Keep a Changelog / SemVer `CHANGELOG.md` in the repo's single language, and the `## Repo profile` marker. It is idempotent and never clobbers existing files without showing a diff first.
 
 ## Layout
 
@@ -77,7 +77,7 @@ The plugin brings the three skills with it. Its `version` follows the repo's rel
 
 Claude Code loads a project's skills from the `.claude/skills/` folder at the root of that project, and global skills from `~/.claude/skills/`.
 
-The repo is organized so each skill copies as one block. The [skills/](skills/) folder holds `committing/`, `releasing/` and `scaffolding-repos/`, each already under the exact name Claude Code expects.
+The repo is organized so each skill copies as one block. The [skills/](skills/) folder holds `committing/`, `releasing/`, and `scaffolding-repos/`, each already under the exact name Claude Code expects.
 
 To install them in a project, copy the three folders into that project's `.claude/skills/` directory, creating that directory if it does not exist. For an installation that applies to all your projects, copy the same folders into `~/.claude/skills/` instead.
 
@@ -99,8 +99,8 @@ Once the skills are installed and Claude Code is restarted, Claude uses them in 
 
 These skills handle Git and GitHub hygiene, not the substance of your work. A few things they deliberately leave to you:
 
-- They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
-- They do not judge the code. They check comments, docs freshness and conventional-commit form, not correctness, design or factual accuracy.
+- They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG, and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
+- They do not judge the code. They check comments, docs freshness, and conventional-commit form, not correctness, design, or factual accuracy.
 - They model two axes only, `Lock` and `Docs language`. A repo whose workflow falls outside them (a monorepo release train, a signed-tag policy, a non-`main` default branch) may need manual steps the skills do not cover.
 - Docs language is `en` or `fr`. Other languages are not supported.
 

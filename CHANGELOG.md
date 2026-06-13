@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- English-prose pass over the README and the `committing` skill: US spelling (`color`, `behavior`), missing serial commas, and small wording fixes.
+
 ## [1.2.0] - 2026-06-12
 
 ### Added
