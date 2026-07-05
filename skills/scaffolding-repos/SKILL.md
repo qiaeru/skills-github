@@ -1,6 +1,6 @@
 ---
 name: scaffolding-repos
-description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting or normalizing a repo: install the generic .gitignore (Claude, OS and IDE files), the LF .gitattributes, a Keep a Changelog / SemVer CHANGELOG.md, and the Repo profile marker the other github skills read.
+description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting or normalizing a repo: install the generic .gitignore, the LF .gitattributes, a Keep a Changelog / SemVer CHANGELOG.md, and the Repo profile marker the other github skills read.
 ---
 
 # Repo setup
@@ -8,6 +8,8 @@ description: Scaffold or refresh the generic files of the owner's public GitHub 
 Install or refresh the four things every one of the owner's repos should carry: a generic `.gitignore`, an LF-normalizing `.gitattributes`, a `CHANGELOG.md` (Keep a Changelog + SemVer), and the `## Repo profile` marker in the root `CLAUDE.md`.
 
 **Idempotent and non-destructive.** If a file already exists, show a diff of what you would change and ask before writing. Never clobber an existing `CHANGELOG.md` or hand-tuned `.gitignore`; merge missing entries in instead.
+
+**LICENSE check.** While in the repo, check for a `LICENSE` file. If there is none, flag it to the owner: these repos are public, and a public repo without a license is all-rights-reserved by default, which usually contradicts the intent. Do not pick or install a license yourself; the choice belongs to the owner.
 
 ## 1. Determine the profile
 

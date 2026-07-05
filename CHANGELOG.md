@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - English-prose pass over the README and the `committing` skill: US spelling (`color`, `behavior`), missing serial commas, and small wording fixes.
+- `committing` adds the amend rule (fix an unpushed commit with `git commit --amend`, fix forward once pushed), per-concern staging instead of a reflex `git add -A`, the same diff base for the secret scan as for the comment pass (with an `origin/main` fallback when the branch has no upstream), and pins the `[Unreleased]` and version headings as never localized.
+- `releasing` names the pre-release range (`<last-tag>..HEAD`, the whole history on a first release), guards the tag step (clean tree, right commit, `vX.Y.Z` as the tag message), recovers a pushed tag whose Release did not publish, skips the automation check when no workflow exists, and reminds that a released plugin reaches installed copies through `/plugin update`.
+- `scaffolding-repos` flags a missing `LICENSE` to the owner without ever picking one.
+- Trim the skill descriptions back under the 300-character frontmatter limit, and write italics as underscores.
 
 ### Fixed
 

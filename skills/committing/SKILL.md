@@ -1,6 +1,6 @@
 ---
 name: committing
-description: Pre-commit and pre-push checklist for the owner's public GitHub repos. Use before every commit, push, or PR. Covers the Git workflow (branch/PR or direct-to-main per the lock, conventional commits), pruning unnecessary comments, keeping docs and CLAUDE.md current, and CHANGELOG tightening.
+description: Pre-commit and pre-push checklist for the owner's public GitHub repos. Use before every commit, push, or PR. Covers the Git workflow (branch/PR or direct-to-main per the lock, conventional commits), comment pruning, keeping docs and CLAUDE.md current, and CHANGELOG tightening.
 ---
 
 # Pre-commit / pre-push checklist
@@ -22,11 +22,12 @@ Read them before doing anything else. If the section is missing, infer what you 
 
 Shared by both modes:
 
-- One commit per concern: one feature, one bugfix, one refactor. Never bundle unrelated changes in the same commit, because the owner relies on atomic commits to review and revert.
+- One commit per concern: one feature, one bugfix, one refactor. Never bundle unrelated changes in the same commit, because the owner relies on atomic commits to review and revert. When the worktree mixes several concerns, stage per concern (`git add <paths>`); a reflex `git add -A` is what fuses them into one commit.
+- A mistake caught after the commit but before the push is fixed with `git commit --amend`, which keeps the history atomic. Once the commit is pushed, fix forward with a new commit instead: never amend or force-push published history, and in `free` mode that history is `main` itself, shared by anyone who pulled it.
 - Conventional commits for messages (and PR titles when a PR exists): `fix:`, `feat:`, `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`, `feat(timer):`). Titles stay at or below seventy characters.
 - Keep the `Co-Authored-By` trailer the harness adds to each commit, exactly as written; never strip it. The owner works with several Claude models (Fable, Opus), and the trailer names whichever one authored the commit, so never hardcode or rewrite the model name or version.
 - Pass any multi-line commit message or PR body through a file (`git commit --file <file>`, `gh pr create --body-file <file>`), never inline `-m "..."` / `--body "..."`. Inline multi-line bodies invite shell quoting accidents, and the trap is worse when the shell is PowerShell but the snippet was written for Bash. Write that file outside the worktree (the OS temp directory) or in a gitignored path, so a `git add -A` never stages it; delete it after.
-- These repos are public, so before pushing scan the outgoing diff for anything that must not ship: API keys and tokens, `.env` contents, absolute local paths, personal email addresses. Also check `git status` for unintended staged files (build artifacts, local config, editor leftovers). A secret that reaches a public remote is compromised even if a later commit removes it: it has to be rotated, so catching it here is the cheap moment.
+- These repos are public, so before pushing scan the outgoing diff (`git diff <base>`, the base defined in section 2) for anything that must not ship: API keys and tokens, `.env` contents, absolute local paths, personal email addresses. Also check `git status` for unintended staged files (build artifacts, local config, editor leftovers). A secret that reaches a public remote is compromised even if a later commit removes it: it has to be rotated, so catching it here is the cheap moment.
 
 Example (the subject and body follow the docs language; only the prefix stays English):
 
@@ -52,13 +53,13 @@ Co-Authored-By: <the trailer exactly as the harness wrote it>
 
 ## 2. Prune the comments in the diff
 
-These repos are public, so the bar is "strictly useful". Run `git diff <base>` (locked: `<base>` is the branch point off `main`, `git merge-base origin/main HEAD`; free: the last pushed commit, `@{u}`), which also covers staged and not-yet-committed changes since this pass runs before the commit, and decide keep-or-delete on each added comment block, whatever the syntax (`/* */`, `//`, `#`, `<!-- -->`). Keep only the comments that explain a non-obvious *why*: a hidden constraint, a subtle invariant, a deliberate workaround. Delete paraphrases of code, lists of selectors or callers, and design-journal remarks. When in doubt, remove the comment. Then confirm the surviving comments are still accurate (no stale references to renamed symbols or removed code paths).
+These repos are public, so the bar is "strictly useful". Run `git diff <base>` (locked: `<base>` is the branch point off `main`, `git merge-base origin/main HEAD`; free: the last pushed commit, `@{u}`, or `origin/main` when the branch has no upstream configured), which also covers staged and not-yet-committed changes since this pass runs before the commit, and decide keep-or-delete on each added comment block, whatever the syntax (`/* */`, `//`, `#`, `<!-- -->`). Keep only the comments that explain a non-obvious _why_: a hidden constraint, a subtle invariant, a deliberate workaround. Delete paraphrases of code, lists of selectors or callers, and design-journal remarks. When in doubt, remove the comment. Then confirm the surviving comments are still accurate (no stale references to renamed symbols or removed code paths).
 
 ## 3. Keep the docs current
 
 If the diff changes public behavior, configuration, an API or event surface, or anything a user or contributor might look up, update both `CHANGELOG.md` (under `[Unreleased]`) and the relevant documentation (`README.md` or the matching `docs/*.md`). Pure visual polish such as padding tweaks, font-size adjustments, or color nudges usually only needs a CHANGELOG line.
 
-Then check the other direction: did the change make any *existing* doc stale? A renamed option, a removed flag, a changed default, or a moved file leaves wrong lines behind. Fix or delete those, do not only add new lines. The docs must describe the code as it is after this commit.
+Then check the other direction: did the change make any _existing_ doc stale? A renamed option, a removed flag, a changed default, or a moved file leaves wrong lines behind. Fix or delete those, do not only add new lines. The docs must describe the code as it is after this commit.
 
 ## 4. Keep `CLAUDE.md` current
 
@@ -70,6 +71,8 @@ Even when the current diff did not add to it, re-read every bullet under `[Unrel
 
 - `en`: `Added` / `Changed` / `Deprecated` / `Removed` / `Fixed` / `Security`
 - `fr`: `Ajouté` / `Modifié` / `Déprécié` / `Supprimé` / `Corrigé` / `Sécurité`
+
+Only the change-type names localize. The `[Unreleased]` heading and the `[X.Y.Z] - YYYY-MM-DD` release headings stay exactly as written in both languages: the `releasing` skill looks for the literal `[Unreleased]` when it promotes the section, so never translate it (no `[Non publié]`).
 
 Example (English repo). Before, two overlapping bullets full of implementation detail:
 

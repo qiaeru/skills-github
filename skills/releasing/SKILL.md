@@ -13,7 +13,7 @@ Read `Lock:` and `Docs language:` from the `## Repo profile` section of the repo
 
 ## 1. Pre-flight: run the `committing` checklist
 
-A release ships the docs, not just the code, so before bumping anything run the `committing` pass over everything since the last release: confirm the docs are current and that no change left an existing doc stale, update any `CLAUDE.md` the work invalidated or extended, and prune comments to the strictly useful. Then make sure `[Unreleased]` is complete: every user-visible change since the last tag has a bullet, there are no duplicates, and it reads cleanly for a human. A release is the worst moment to find the changelog is missing entries.
+A release ships the docs, not just the code, so before bumping anything run the `committing` pass over everything since the last release (the range `<last-tag>..HEAD`, with `<last-tag>` from `git describe --tags --abbrev=0`; on a first release, with no tag yet, the pass covers the whole history): confirm the docs are current and that no change left an existing doc stale, update any `CLAUDE.md` the work invalidated or extended, and prune comments to the strictly useful. Then make sure `[Unreleased]` is complete: every user-visible change since the last tag has a bullet, there are no duplicates, and it reads cleanly for a human. A release is the worst moment to find the changelog is missing entries.
 
 If the project has a typecheck or build step, run it now and confirm it passes before you bump anything. This matters most when publishing the Release triggers a build (see step 5): a broken build is cheap to find before the tag and painful to find after. When the real build only runs in Docker or CI and is not reachable locally, run the cheapest equivalent checks instead (syntax check the changed sources, parse any JSON or config they touch), and tell the owner the actual build will run in CI when the tag is pushed, so they know it is still unverified at tag time.
 
@@ -38,13 +38,13 @@ For example, a `## [Unreleased]` carrying this session's bullets becomes `## [1.
 
 ## 4. Commit, then follow the lock
 
-Make one commit: `chore(release): cut version X.Y.Z` (conventional, `Co-Authored-By` trailer kept). Before tagging, confirm the tag number, the manifest version(s) just bumped, and the new CHANGELOG heading all carry the same `X.Y.Z`; a mismatch here is the classic release-day bug and is painful to fix once the tag is public.
+Make one commit: `chore(release): cut version X.Y.Z` (conventional, `Co-Authored-By` trailer kept). Before tagging, confirm the tag number, the manifest version(s) just bumped, and the new CHANGELOG heading all carry the same `X.Y.Z`; a mismatch here is the classic release-day bug and is painful to fix once the tag is public. Also confirm the working tree is clean (`git status`) and `HEAD` is the commit you mean to tag, since a public tag is cheap to create and costly to move.
 
 **`Lock: locked`:**
 
 1. Commit on the feature branch and push. If no pull request exists yet, give the owner the title and body to paste.
 2. **The owner merges the pull request.** This is the human gate of a locked repo; do not bypass it. Tell the owner explicitly and wait for confirmation before continuing. (The Release itself is published in the last sub-step below, once the tag exists.)
-3. After merge is confirmed: `git checkout main && git pull`, then `git tag -a vX.Y.Z -m "..."` and `git push origin vX.Y.Z`. Delete the feature branch, local first then remote (`git branch -d <branch>` then `git push origin --delete <branch>`). On a squash-merge repo the branch commits were flattened into one new commit on `main`, so they are not ancestors of `main` and `git branch -d` can refuse with "not fully merged"; the work is safely merged, so use `git branch -D` to force it.
+3. After merge is confirmed: `git checkout main && git pull`, then `git tag -a vX.Y.Z -m "vX.Y.Z"` and `git push origin vX.Y.Z`. The tag message is just the version, in both lock modes: the story lives in the CHANGELOG and the Release notes, not in the tag. Delete the feature branch, local first then remote (`git branch -d <branch>` then `git push origin --delete <branch>`). On a squash-merge repo the branch commits were flattened into one new commit on `main`, so they are not ancestors of `main` and `git branch -d` can refuse with "not fully merged"; the work is safely merged, so use `git branch -D` to force it.
 4. Walk the owner through the GitHub Releases page: select the tag just pushed and paste the relevant CHANGELOG section as the release body. If `gh` is installed and authenticated (`gh auth status`), you may offer instead to run `gh release create vX.Y.Z --notes-file <file>` once the owner approves. Always pass the body through `--notes-file`, never inline `--notes "..."`: a multi-line body inline invites shell quoting accidents (a stray `@`, an unescaped quote). Without `--title`, gh uses the tag name as the Release title, which is fine; add `--title "..."` only if you want a different label.
 
 **`Lock: free`:**
@@ -52,7 +52,11 @@ Make one commit: `chore(release): cut version X.Y.Z` (conventional, `Co-Authored
 1. Commit on `main`, tag `vX.Y.Z`, and push both `main` and the tag.
 2. Publish the GitHub Release: walk the owner through the Releases page with the CHANGELOG section, or, if `gh` is authenticated and the owner approves, `gh release create vX.Y.Z --notes-file <file>`.
 
+**If the tag pushed but the Release did not publish** (either lock mode), the tag is fine: do not retag, just re-run the Release step (`gh release create vX.Y.Z --notes-file <file>` again, or the Releases page). Creating a second tag for the same version is the thing to avoid.
+
 ## 5. Confirm the release automation
+
+If there is no workflow under `.github/workflows/`, there is no automation to confirm; skip this step.
 
 Many of these repos publish on a tag or Release event (a Docker image, an npm package, a GitHub Pages build). Before relying on it, read the `on:` trigger of the publishing workflow under `.github/workflows/`, because it decides when the automation fires and what to watch:
 
@@ -60,3 +64,5 @@ Many of these repos publish on a tag or Release event (a Docker image, an npm pa
 - `on: release: types: [published]` fires only when you publish the Release; nothing runs at the tag push.
 
 Either way, confirm the run succeeded instead of only telling the owner it was triggered: `gh run list --workflow=<file>` (or `gh run watch`) after the tag push. On a tag trigger especially, a failed build means the image or package never publishes even though the tag and Release already exist, so without this check the failure goes unnoticed.
+
+When the repo is a Claude Code plugin, the release does not propagate on its own: remind the owner that each machine with the plugin installed picks it up through `/plugin update <name>` or Claude Code's automatic update.
