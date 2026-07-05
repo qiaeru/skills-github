@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - English-prose pass over the README and the `committing` skill: US spelling (`color`, `behavior`), missing serial commas, and small wording fixes.
 
+### Fixed
+
+- Drop the redundant `**/CLAUDE.md` line from the `.gitignore` template: an unslashed `CLAUDE.md` already matches at every level.
+
 ## [1.2.0] - 2026-06-12
 
 ### Added
