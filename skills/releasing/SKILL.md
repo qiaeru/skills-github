@@ -32,7 +32,7 @@ Find where the version lives and bump it:
 
 ## 3. Promote the CHANGELOG
 
-In `CHANGELOG.md`, rename `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD` and add a fresh empty `[Unreleased]` section above it. Re-read every bullet in the section being promoted and apply the tightening rule from the `committing` skill (short sentences, no implementation detail, grouped under the localized change-type names). Never rewrite already-released sections.
+In `CHANGELOG.md`, rename `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD` and add a fresh empty `[Unreleased]` section above it. Re-read every bullet in the section being promoted and apply the tightening rule from the `committing` skill (short sentences, no implementation detail, grouped under the standard English change-type names). Never rewrite already-released sections.
 
 For example, a `## [Unreleased]` carrying this session's bullets becomes `## [1.4.0] - 2026-05-27` (today's date), with a new empty `## [Unreleased]` inserted above it.
 

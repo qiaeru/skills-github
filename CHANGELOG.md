@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- CHANGELOG headings stay English in `fr` repos too (`Added`, `Fixed`, `[Unreleased]`): the official Keep a Changelog French translation keeps the English labels, so the skills stop localizing the change-type names.
+
 ## [1.3.0] - 2026-07-05
 
 ### Added

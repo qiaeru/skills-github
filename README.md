@@ -16,7 +16,7 @@ Each repo is described by a `## Repo profile` section in its root `CLAUDE.md`:
 ```
 
 - **Lock** decides the Git workflow. `locked` means `main` is protected: work on a feature branch, open a pull request, and the owner merges and publishes the Release (the human gate). `free` means commit straight to `main`.
-- **Docs language** decides the language of everything written for the owner: commit messages, PR text, CHANGELOG entries, docs. `en` or `fr`.
+- **Docs language** decides the language of everything written for the owner: commit messages, PR text, CHANGELOG entries, docs. `en` or `fr`. The Keep a Changelog headings (`Added`, `Fixed`, `[Unreleased]`) stay English either way, matching the upstream convention.
 
 The skill instructions themselves are in English; only the output follows the docs language. `CLAUDE.md` is gitignored, so the marker stays local and never ships.
 

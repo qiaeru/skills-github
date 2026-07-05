@@ -16,7 +16,7 @@ This skill adapts to two axes declared in the repo's root `CLAUDE.md`, under a `
 
 Read them before doing anything else. If the section is missing, infer what you can (a "main is protected" note or a PR-only history points to `locked`; the README language points to the docs language), state your assumption, ask the owner to confirm once, then write the four-line `## Repo profile` marker into the root `CLAUDE.md` yourself so the next run is deterministic (the block is in the `scaffolding-repos` skill, step 5). Reach for the full `scaffolding-repos` skill only if the repo also lacks its other generic files.
 
-**Everything written for the owner follows the docs language** (commit messages, PR title and body, CHANGELOG entries, docs); only the conventional-commit prefixes stay English (`feat:`, `fix:`). Respect any markdown and punctuation rules the repo's `CLAUDE.md` sets (for example a ban on em-dashes in owner-facing text).
+**Everything written for the owner follows the docs language** (commit messages, PR title and body, CHANGELOG entries, docs); only the conventional-commit prefixes (`feat:`, `fix:`) and the CHANGELOG headings (see step 5) stay English. Respect any markdown and punctuation rules the repo's `CLAUDE.md` sets (for example a ban on em-dashes in owner-facing text).
 
 ## 1. Git workflow rules
 
@@ -67,12 +67,9 @@ When the session changed something the repo's `CLAUDE.md` records (an architectu
 
 ## 5. Tighten `[Unreleased]` in `CHANGELOG.md`
 
-Even when the current diff did not add to it, re-read every bullet under `[Unreleased]`: collapse paragraphs to one or two sentences, merge duplicate entries, and strip implementation detail (rgba values, exhaustive file paths, intermediate refactor steps) because that information already lives in the diff. Group the bullets per the Keep-a-Changelog convention, ordered from the most user-visible to the most technical, using the change-type names of the docs language:
+Even when the current diff did not add to it, re-read every bullet under `[Unreleased]`: collapse paragraphs to one or two sentences, merge duplicate entries, and strip implementation detail (rgba values, exhaustive file paths, intermediate refactor steps) because that information already lives in the diff. Group the bullets per the Keep-a-Changelog convention, ordered from the most user-visible to the most technical, under the standard change-type names: `Added` / `Changed` / `Deprecated` / `Removed` / `Fixed` / `Security`.
 
-- `en`: `Added` / `Changed` / `Deprecated` / `Removed` / `Fixed` / `Security`
-- `fr`: `Ajouté` / `Modifié` / `Déprécié` / `Supprimé` / `Corrigé` / `Sécurité`
-
-Only the change-type names localize. The `[Unreleased]` heading and the `[X.Y.Z] - YYYY-MM-DD` release headings stay exactly as written in both languages: the `releasing` skill looks for the literal `[Unreleased]` when it promotes the section, so never translate it (no `[Non publié]`).
+Every heading stays English in both languages, matching the upstream convention (even the official French translation of Keep a Changelog keeps the English labels): the change-type names above, the `[Unreleased]` heading, and the `[X.Y.Z] - YYYY-MM-DD` release headings. Only the bullet content follows the docs language. The `releasing` skill looks for the literal `[Unreleased]` when it promotes the section, so never translate it (no `[Non publié]`).
 
 Example (English repo). Before, two overlapping bullets full of implementation detail:
 

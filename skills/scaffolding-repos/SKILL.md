@@ -45,7 +45,7 @@ If there is no `CHANGELOG.md`, create one from the boilerplate for the docs lang
 - `templates/CHANGELOG.en.md` -> `CHANGELOG.md`
 - `templates/CHANGELOG.fr.md` -> `CHANGELOG.md`
 
-The repo is mono-language: install only the one matching the docs language, never both. Then start tracking changes under `[Unreleased]` with the localized change-type names (see the `committing` skill).
+The repo is mono-language: install only the one matching the docs language, never both. Then start tracking changes under `[Unreleased]` with the standard English change-type names (see the `committing` skill).
 
 ## 4. Append ecosystem entries
 
