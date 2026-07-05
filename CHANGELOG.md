@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- A `validate` CI workflow mirroring the sibling repos: a repo-invariants script (skill frontmatter, relative links, the no-dash prose rule, plugin version matching the latest release), markdown hygiene via markdownlint-cli2, and the plugin manifest validation, on push, PR, and a weekly schedule. Dependabot keeps the workflow's actions current.
+
 ### Changed
 
 - English-prose pass over the README and the `committing` skill: US spelling (`color`, `behavior`), missing serial commas, and small wording fixes.

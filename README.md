@@ -34,9 +34,15 @@ skills-github/
 │   ├── plugin.json
 │   └── marketplace.json
 ├── .github/
-│   └── FUNDING.yml
+│   ├── FUNDING.yml
+│   ├── dependabot.yml
+│   ├── scripts/
+│   │   └── validate.mjs
+│   └── workflows/
+│       └── validate.yml
 ├── .gitattributes
 ├── .gitignore
+├── .markdownlint-cli2.jsonc
 ├── README.md
 ├── CHANGELOG.md
 ├── LICENSE
