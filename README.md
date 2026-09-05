@@ -16,7 +16,7 @@ Each repo is described by a `## Repo profile` section in its root `CLAUDE.md`:
 ```
 
 - **Lock** decides the Git workflow. `locked` means `main` is protected: work on a feature branch, open a pull request, and the owner merges and publishes the Release (the human gate). `free` means commit straight to `main`.
-- **Docs language** decides the language of everything written for the owner: commit messages, PR text, CHANGELOG entries, docs. `en` or `fr`. The Keep a Changelog headings (`Added`, `Fixed`, `[Unreleased]`) stay English either way, matching the upstream convention.
+- **Docs language** decides the language of everything written for the owner: commit messages, PR text, CHANGELOG bullets, docs. `en` or `fr`. The Keep a Changelog boilerplate (title, intro sentences, and headings such as `Added`, `Fixed`, `[Unreleased]`) stays English either way: the official French translation of Keep a Changelog shows the same untranslated example, so only the bullets follow the docs language.
 
 The skill instructions themselves are in English; only the output follows the docs language. `CLAUDE.md` is gitignored, so the marker stays local and never ships.
 
@@ -24,7 +24,7 @@ The skill instructions themselves are in English; only the output follows the do
 
 - **`committing`** is the checklist to run before every commit and push: Git workflow rules (branching vs direct-to-main per the lock, conventional commits, PR body style), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the `[Unreleased]` CHANGELOG section.
 - **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then tag and publish, following the lock (PR + owner-published Release, or direct tag on `main`). It offers the `gh` CLI for PR and Release creation while keeping the owner as the merge/publish gate in locked repos.
-- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, a Keep a Changelog / SemVer `CHANGELOG.md` in the repo's single language, and the `## Repo profile` marker. It is idempotent and never clobbers existing files without showing a diff first.
+- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate, and the `## Repo profile` marker. It is idempotent and never clobbers existing files without showing a diff first, and it ends by committing the scaffold as one `chore:` commit through `committing`.
 
 ## Layout
 
@@ -56,11 +56,10 @@ skills-github/
         └── templates/
             ├── gitignore
             ├── gitattributes
-            ├── CHANGELOG.en.md
-            └── CHANGELOG.fr.md
+            └── CHANGELOG.md
 ```
 
-The template files under `scaffolding-repos/templates/` are stored without their final names so git tracks them; `scaffolding-repos` renames them on install (`gitignore` and `gitattributes` gain their leading dot, `CHANGELOG.en.md` or `CHANGELOG.fr.md` becomes `CHANGELOG.md` depending on the repo's docs language).
+The `gitignore` and `gitattributes` templates under `scaffolding-repos/templates/` are stored without their leading dot so git tracks them; `scaffolding-repos` renames them on install. `CHANGELOG.md` copies as is, in both docs languages.
 
 The repository doubles as a Claude Code plugin named `skills-github` and as its own plugin marketplace: `plugin.json` describes the plugin (the whole repository, with the skills under `skills/`), and `marketplace.json` lists it so Claude Code can install and update it straight from GitHub.
 
@@ -91,7 +90,7 @@ When you change a skill in this repo, re-copy its folder into the target project
 
 ### First run
 
-Restart Claude Code so the skills are detected. You can confirm they were picked up by asking Claude for the list of available skills or by invoking one by name. Then, in the target repo, invoke `scaffolding-repos` once to lay down the generic files and write the `## Repo profile` marker; after that, `committing` and `releasing` read the marker and adapt automatically.
+Restart Claude Code so the skills are detected, then confirm they were picked up: ask Claude for the list of available skills, or, in the target repo, ask it to "scaffold this repo with `scaffolding-repos`" and watch it lay down the generic files and write the `## Repo profile` marker. If instead Claude improvises its own `.gitignore` or asks what a Repo profile is, the skills were not detected: check the plugin install (or re-copy the folders into `.claude/skills/`) and restart Claude Code. After that first scaffold, `committing` and `releasing` read the marker and adapt automatically.
 
 ## Usage
 
@@ -109,10 +108,6 @@ These skills handle Git and GitHub hygiene, not the substance of your work. A fe
 - They do not judge the code. They check comments, docs freshness, and conventional-commit form, not correctness, design, or factual accuracy.
 - They model two axes only, `Lock` and `Docs language`. A repo whose workflow falls outside them (a monorepo release train, a signed-tag policy, a non-`main` default branch) may need manual steps the skills do not cover.
 - Docs language is `en` or `fr`. Other languages are not supported.
-
-## Quick test
-
-To confirm the skills are loaded, ask Claude to list the available skills, or invoke one by name. The clearest check: in a repo where you copied the folders, ask Claude to "scaffold this repo with `scaffolding-repos`" and watch it lay down the generic files and write the `## Repo profile` marker. If instead Claude improvises its own `.gitignore` or asks what a Repo profile is, the skills were not detected: re-copy the folders into `.claude/skills/` and restart Claude Code.
 
 ## License
 

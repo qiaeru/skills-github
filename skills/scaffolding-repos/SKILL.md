@@ -1,6 +1,6 @@
 ---
 name: scaffolding-repos
-description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting or normalizing a repo: install the generic .gitignore, the LF .gitattributes, a Keep a Changelog / SemVer CHANGELOG.md, and the Repo profile marker the other github skills read.
+description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting, normalizing, or auditing a repo's setup: the generic .gitignore, the LF .gitattributes, a Keep a Changelog / SemVer CHANGELOG.md, and the Repo profile marker the other github skills read.
 ---
 
 # Repo setup
@@ -40,12 +40,7 @@ When `.gitattributes` lands in a repo that already has commits, the new rules do
 
 ## 3. Create `CHANGELOG.md`
 
-If there is no `CHANGELOG.md`, create one from the boilerplate for the docs language, which lives next to this skill in `templates/`:
-
-- `templates/CHANGELOG.en.md` -> `CHANGELOG.md`
-- `templates/CHANGELOG.fr.md` -> `CHANGELOG.md`
-
-The repo is mono-language: install only the one matching the docs language, never both. Then start tracking changes under `[Unreleased]` with the standard English change-type names (see the `committing` skill).
+If there is no `CHANGELOG.md`, copy `templates/CHANGELOG.md`, next to this skill, to the repo root as is. The boilerplate is English whatever the docs language: the official French translation of Keep a Changelog shows the very same English example (title, intro sentences, `[Unreleased]`), so a `fr` repo keeps the English preamble and headings and writes only its bullets in French. Do not translate the file. Then start tracking changes under `[Unreleased]` with the standard English change-type names (see the `committing` skill).
 
 ## 4. Append ecosystem entries
 
@@ -55,6 +50,7 @@ The generic `.gitignore` only covers the universal set (Claude files, OS, IDE, b
 - Python: `__pycache__/`, `*.pyc`, `.venv/`, `.pytest_cache/`, `dist/`, `*.egg-info/`
 - Rust: `target/`
 - Always, if relevant: `.env` and any secret or local database files.
+- Claude Code: the template ignores `.claude/` whole. If the repo carries a `.claude/settings.json` meant to be shared (a team permission allowlist, hooks), replace the `.claude/` line with `.claude/*` followed by `!.claude/settings.json`. The `*` matters: git cannot re-include a file whose parent directory is excluded, so a bare `!` after `.claude/` does nothing. `settings.local.json` and the rest of the folder stay ignored.
 
 ## 5. Write the Repo profile marker
 
@@ -70,3 +66,7 @@ Add or refresh this section in the root `CLAUDE.md` (create a minimal `CLAUDE.md
 Set the two values to the profile from step 1.
 
 **Marker-only mode.** When `committing` or `releasing` only need the profile recorded and the repo already has its other generic files, write just this section into the root `CLAUDE.md` directly; do not run the rest of this skill. Those skills do this inline, so the full scaffold is reserved for a repo that needs its generic files installed or refreshed.
+
+## 6. Commit the scaffold
+
+Run the `committing` checklist and commit the generic files as one `chore:` commit (subject in the docs language, for example `chore: add generic repo files`), following the lock. Keep it apart from the renormalization commit of step 2 and from any code change made in the same session, so the scaffold stays a single, revertable concern.

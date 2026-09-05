@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `scaffolding-repos` ships one English `CHANGELOG.md` template for both docs languages: the French Keep a Changelog page shows the same untranslated example (title, intro sentences, headings), so a `fr` repo keeps the English boilerplate and writes only its bullets in French. The skill also ends by committing the scaffold as one `chore:` commit, apart from the line-ending normalization.
+- `committing` opens with the order to run its steps in (edit the worktree, then stage), defines the diff base once for both the secret scan and the comment pass, drops a bullet that repeated the shared rules in free mode, and no longer stalls on the profile confirmation when nobody can answer (it proceeds on the inferred profile, `locked` when the lock is uncertain, and reports the assumption).
+- `releasing` reads the profile through `committing` step 0 instead of restating it, reads today's date from the shell rather than from memory, counts lint and repo-invariants scripts among the pre-flight checks, spells out the Release notes (the promoted section minus its version heading), and tells CI-only workflows apart from release automation in its last step.
+- `scaffolding-repos` explains how to share a `.claude/settings.json` despite the ignored `.claude/` folder (`.claude/*` plus a `!` rule, since git cannot re-include a file under an excluded directory).
+- The three skill descriptions name more of the phrasings that should trigger them (a one-line change, "push this", tag or bump a version, audit a repo's setup).
+- The invariants script also checks that the literal `## [Unreleased]` heading exists in the CHANGELOG and its template, and that the French comment-translation table in `scaffolding-repos` mirrors the template comments, row for row.
+- README: the "Quick test" section folds into "First run".
+
+### Removed
+
+- The `CHANGELOG.fr.md` template, superseded by the single English one.
+
 ## [1.4.0] - 2026-07-05
 
 ### Changed
