@@ -124,9 +124,41 @@ if (!released) {
   );
 }
 
+// 5. The releasing skill promotes the literal "## [Unreleased]" heading, so
+// the repo's CHANGELOG and the template both have to carry it untranslated.
+for (const file of ['CHANGELOG.md', 'skills/scaffolding-repos/templates/CHANGELOG.md']) {
+  if (!/^## \[Unreleased\]$/m.test(read(file))) {
+    report(file, null, 'no literal "## [Unreleased]" heading, which the releasing skill promotes');
+  }
+}
+
+// 6. The French translation table in scaffolding-repos mirrors the template
+// comments: every "#" line of the two templates has a row, and no row is
+// left over from a comment that no longer exists.
+const scaffoldSkill = 'skills/scaffolding-repos/SKILL.md';
+const tableEnglish = new Set(
+  [...read(scaffoldSkill).matchAll(/^\| `(#[^`]*)` \| `#[^`]+` \|$/gm)].map((m) => m[1]),
+);
+const templateComments = new Set();
+for (const name of ['gitignore', 'gitattributes']) {
+  for (const line of read(path.join('skills/scaffolding-repos/templates', name)).split(/\r?\n/)) {
+    if (line.startsWith('#')) templateComments.add(line);
+  }
+}
+for (const comment of templateComments) {
+  if (!tableEnglish.has(comment)) {
+    report(scaffoldSkill, null, `template comment "${comment}" has no row in the French translation table`);
+  }
+}
+for (const comment of tableEnglish) {
+  if (!templateComments.has(comment)) {
+    report(scaffoldSkill, null, `translation table row "${comment}" matches no template comment`);
+  }
+}
+
 if (errors.length > 0) {
   console.error(`${errors.length} invariant error(s):`);
   for (const e of errors) console.error(`  ${e}`);
   process.exit(1);
 }
-console.log(`Invariants checked over ${proseFiles.length} files: frontmatter, links, punctuation, version.`);
+console.log(`Invariants checked over ${proseFiles.length} files: frontmatter, links, punctuation, version, Unreleased heading, translation table.`);
