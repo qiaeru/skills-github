@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-09-05
+
 ### Changed
 
 - `scaffolding-repos` ships one English `CHANGELOG.md` template for both docs languages: the French Keep a Changelog page shows the same untranslated example (title, intro sentences, headings), so a `fr` repo keeps the English boilerplate and writes only its bullets in French. The skill also ends by committing the scaffold as one `chore:` commit, apart from the line-ending normalization.
