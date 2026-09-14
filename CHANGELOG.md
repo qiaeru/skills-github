@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The skills write in the language the repo already uses (French docs, French output; English docs, English output), following `CLAUDE.md` when it names one, instead of a `Docs language:` token; nothing has to be declared for the common case. `committing` also states that a repo's own conventions beat the skill's defaults.
+- `committing` and `releasing` commit straight to `main` by default, with a branch and a pull request only when the owner asks or a protected `main` rejects the push, instead of two declared lock modes.
+- With `gh` installed and authenticated, the skills do the GitHub side themselves: `committing` opens a requested pull request and merges it once the owner approves (`gh pr merge`, with an explicit strategy flag), `releasing` publishes the Release with `gh release create` on the owner's request and watches the triggered run with `gh run watch`. Without `gh`, they give the owner what to paste.
+- The shared rules live once in `committing` (the language rule in step 0, Git and `gh` in step 1, CHANGELOG tightening in step 5); `releasing` and `scaffolding-repos` point to them.
+- `scaffolding-repos` installs three files (`.gitignore`, `.gitattributes`, `CHANGELOG.md`), writes no marker, and folds its language step into its intro (steps 1 to 4).
+
+### Removed
+
+- The `## Repo profile` marker in `CLAUDE.md`, its `Lock:` and `Docs language:` tokens, the marker-only mode, and the `locked` mode with its owner-merge gate before the tag.
+
 ## [1.5.0] - 2026-09-05
 
 ### Changed

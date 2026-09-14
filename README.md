@@ -2,29 +2,21 @@
 
 Reusable Claude Code skills for managing public GitHub repos at commit, push, and release time, plus the generic repo files every project should carry.
 
-This repo is the single source for three skills. You copy them into a target repo's `.claude/skills/` (gitignored, local only). The skills stay generic: instead of hardcoding one project's layout, they adapt to two axes they read from the target repo.
+This repo is the single source for three skills. You copy them into a target repo's `.claude/skills/` (gitignored, local only). The skills stay generic: instead of hardcoding one project's layout, they adapt to the target repo, its language and its conventions.
 
-## The two axes
+## The repo's language and workflow
 
-Each repo is described by a `## Repo profile` section in its root `CLAUDE.md`:
+The skills stay consistent with the repo: a repo whose README and docs are in French gets French commit messages, CHANGELOG bullets, docs, Release notes, and dotfile comments; an English repo gets English. If your `CLAUDE.md` names a language, they follow it, and a repo with nothing written yet is asked once. Nothing has to be declared anywhere for the common case.
 
-```markdown
-## Repo profile (read by the github skills)
+The Keep a Changelog boilerplate (title, intro sentences, and headings such as `Added`, `Fixed`, `[Unreleased]`) stays English either way: the official French translation of Keep a Changelog shows the same untranslated example, so only the bullets follow the repo's language. The skill instructions themselves are in English; only the output follows the repo.
 
-- Lock: locked   <!-- locked = feature branch + PR ; free = commit straight to main -->
-- Docs language: en   <!-- en | fr -->
-```
-
-- **Lock** decides the Git workflow. `locked` means `main` is protected: work on a feature branch, open a pull request, and the owner merges and publishes the Release (the human gate). `free` means commit straight to `main`.
-- **Docs language** decides the language of everything written for the owner: commit messages, PR text, CHANGELOG bullets, docs. `en` or `fr`. The Keep a Changelog boilerplate (title, intro sentences, and headings such as `Added`, `Fixed`, `[Unreleased]`) stays English either way: the official French translation of Keep a Changelog shows the same untranslated example, so only the bullets follow the docs language.
-
-The skill instructions themselves are in English; only the output follows the docs language. `CLAUDE.md` is gitignored, so the marker stays local and never ships.
+The Git workflow is direct-to-main by default: the skills commit on `main`, tag on it, and publish the Release from it. They open a branch and a pull request only when you ask for one or the repo requires it (a protected `main`). When the `gh` CLI is installed and authenticated, Claude does the GitHub side itself (pull requests, merges once you approve, Releases, CI runs) instead of walking you through the website. Everywhere, the repo's own conventions (its `CLAUDE.md`, its existing docs, its history) beat the skill's defaults.
 
 ## The three skills
 
-- **`committing`** is the checklist to run before every commit and push: Git workflow rules (branching vs direct-to-main per the lock, conventional commits, PR body style), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the `[Unreleased]` CHANGELOG section.
-- **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then tag and publish, following the lock (PR + owner-published Release, or direct tag on `main`). It offers the `gh` CLI for PR and Release creation while keeping the owner as the merge/publish gate in locked repos.
-- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate, and the `## Repo profile` marker. It is idempotent and never clobbers existing files without showing a diff first, and it ends by committing the scaffold as one `chore:` commit through `committing`.
+- **`committing`** is the checklist to run before every commit and push: Git and GitHub rules (direct-to-main, conventional commits, one commit per concern, a pre-push secret scan, `gh` for the GitHub side), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the `[Unreleased]` CHANGELOG section.
+- **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then commit, tag, publish the GitHub Release with `gh`, and watch the CI run that the tag or the Release triggers.
+- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, and a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate. It is idempotent and never clobbers existing files without showing a diff first, and it ends by committing the scaffold as one `chore:` commit through `committing`.
 
 ## Layout
 
@@ -59,7 +51,7 @@ skills-github/
             └── CHANGELOG.md
 ```
 
-The `gitignore` and `gitattributes` templates under `scaffolding-repos/templates/` are stored without their leading dot so git tracks them; `scaffolding-repos` renames them on install. `CHANGELOG.md` copies as is, in both docs languages.
+The `gitignore` and `gitattributes` templates under `scaffolding-repos/templates/` are stored without their leading dot so git tracks them; `scaffolding-repos` renames them on install. `CHANGELOG.md` copies as is, whatever the repo's language.
 
 The repository doubles as a Claude Code plugin named `skills-github` and as its own plugin marketplace: `plugin.json` describes the plugin (the whole repository, with the skills under `skills/`), and `marketplace.json` lists it so Claude Code can install and update it straight from GitHub.
 
@@ -90,7 +82,7 @@ When you change a skill in this repo, re-copy its folder into the target project
 
 ### First run
 
-Restart Claude Code so the skills are detected, then confirm they were picked up: ask Claude for the list of available skills, or, in the target repo, ask it to "scaffold this repo with `scaffolding-repos`" and watch it lay down the generic files and write the `## Repo profile` marker. If instead Claude improvises its own `.gitignore` or asks what a Repo profile is, the skills were not detected: check the plugin install (or re-copy the folders into `.claude/skills/`) and restart Claude Code. After that first scaffold, `committing` and `releasing` read the marker and adapt automatically.
+Restart Claude Code so the skills are detected, then confirm they were picked up: ask Claude for the list of available skills, or, in the target repo, ask it to "scaffold this repo with `scaffolding-repos`" and watch it lay down the generic files with their comments in the repo's language. If instead Claude improvises its own `.gitignore`, the skills were not detected: check the plugin install (or re-copy the folders into `.claude/skills/`) and restart Claude Code.
 
 ## Usage
 
@@ -98,7 +90,7 @@ Once the skills are installed and Claude Code is restarted, Claude uses them in 
 
 - When you name a skill explicitly ("run `committing` before I push", "cut a release with `releasing`", "scaffold this repo with `scaffolding-repos`"), Claude loads its `SKILL.md` and follows the checklist step by step. This is the most reliable path when you want the full pass.
 - When you ask for the underlying action without naming the skill ("commit this", "ship a new version", "set up the repo files"), Claude recognizes the context from the skill's `description` frontmatter and invokes it on its own. You can confirm by asking which skill it just applied.
-- The three skills chain. `scaffolding-repos` writes the `## Repo profile` marker, then `committing` and `releasing` read it to pick the Git workflow and the docs language. `releasing` also reuses the CHANGELOG tightening rule from `committing`, so a release stays consistent with everyday commits.
+- The three skills chain. `committing` holds the shared rules (the repo's language in step 0, Git and `gh` in step 1), and the other two point to it. `scaffolding-repos` commits its files through `committing`, and `releasing` runs the `committing` pass before tagging and reuses its CHANGELOG tightening rule, so a release stays consistent with everyday commits.
 
 ## Limits
 
@@ -106,8 +98,8 @@ These skills handle Git and GitHub hygiene, not the substance of your work. A fe
 
 - They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG, and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
 - They do not judge the code. They check comments, docs freshness, and conventional-commit form, not correctness, design, or factual accuracy.
-- They model two axes only, `Lock` and `Docs language`. A repo whose workflow falls outside them (a monorepo release train, a signed-tag policy, a non-`main` default branch) may need manual steps the skills do not cover.
-- Docs language is `en` or `fr`. Other languages are not supported.
+- They model one workflow, direct-to-main with a pull request as the exception. A monorepo release train, a signed-tag policy, or a non-`main` default branch may need manual steps the skills do not cover.
+- The generic dotfile comments exist in English and French only; a repo in another language gets the English comments.
 
 ## License
 

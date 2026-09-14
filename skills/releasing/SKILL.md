@@ -1,70 +1,57 @@
 ---
 name: releasing
-description: Cut a new version of one of the owner's public GitHub repos. Use whenever the owner asks to publish, ship, tag, bump, or release a version (patch/minor/major, CHANGELOG promotion, tag, GitHub Release). Adapts the steps to the repo lock (PR workflow vs direct-to-main) and docs language.
+description: Cut a new version of one of the owner's public GitHub repos. Use whenever the owner asks to publish, ship, tag, bump, or release a version (patch/minor/major, CHANGELOG promotion, tag, GitHub Release). Commits, tags, and publishes the Release with gh, in the repo's language.
 ---
 
 # Release procedure
 
-Pick the bump per semantic versioning: **patch** for bug-fixes only, **minor** for any new user-visible feature, **major** for breaking changes that require user or operator action. Use today's date, read from the shell (`date` or `Get-Date`) rather than from memory: a wrong date in a release heading is public and permanent once the tag is pushed.
+Pick the bump per semantic versioning: patch for bug-fixes only, minor for any new user-visible feature, major for breaking changes that require user or operator action. Read today's date from the shell (`date` or `Get-Date`), not from memory: a wrong date in a release heading is public and permanent once the tag is pushed.
 
-## 0. Read the repo profile first
-
-Read `Lock:` and `Docs language:` from the `## Repo profile` section of the repo's root `CLAUDE.md`, exactly as `committing` step 0 describes, including its fallback when the section is missing (infer, confirm once, write the four-line marker yourself). The lock decides whether you cut the release on a feature branch through a pull request or straight on `main`. The docs language decides the wording of the CHANGELOG bullets and of the Release notes.
+The CHANGELOG bullets and the Release notes follow the repo's language, per `committing` step 0. The release commit follows `committing` step 1 (straight to `main` by default, a pull request when the repo requires one, and in that case tag only after the merge), and with `gh` authenticated you publish the Release and check the CI runs yourself. The owner's request to release is the approval to tag and publish; do not ask again, only run the checks in step 4.
 
 ## 1. Pre-flight: run the `committing` checklist
 
-A release ships the docs, not just the code, so before bumping anything run the `committing` pass over everything since the last release (the range `<last-tag>..HEAD`, with `<last-tag>` from `git describe --tags --abbrev=0`; on a first release, with no tag yet, the pass covers the whole history): confirm the docs are current and that no change left an existing doc stale, update any `CLAUDE.md` the work invalidated or extended, and prune comments to the strictly useful. Then make sure `[Unreleased]` is complete: every user-visible change since the last tag has a bullet, there are no duplicates, and it reads cleanly for a human. A release is the worst moment to find the changelog is missing entries.
+A release ships the docs, not just the code, so before bumping anything run the `committing` pass over everything since the last release: the range `<last-tag>..HEAD`, with `<last-tag>` from `git describe --tags --abbrev=0`, or the whole history on a first release. Confirm the docs are current and no change left an existing doc stale, update any `CLAUDE.md` the work invalidated or extended, and prune comments to the strictly useful. Then make sure `[Unreleased]` is complete: every user-visible change since the last tag has a bullet, there are no duplicates, and it reads cleanly for a human. A release is the worst moment to find the changelog is missing entries.
 
-If the project has a typecheck, build, or validation step (a lint script or a repo-invariants check counts), run it now and confirm it passes before you bump anything. This matters most when publishing the Release triggers a build (see step 5): a broken build is cheap to find before the tag and painful to find after. When the real build only runs in Docker or CI and is not reachable locally, run the cheapest equivalent checks instead (syntax check the changed sources, parse any JSON or config they touch), and tell the owner the actual build will run in CI when the tag is pushed, so they know it is still unverified at tag time.
+If the project has a typecheck, build, or validation step (a lint script or a repo-invariants check counts), run it now and confirm it passes before you bump anything. This matters most when publishing the Release triggers a build (step 5): a broken build is cheap to find before the tag and painful after. When the real build only runs in Docker or CI, run the cheapest equivalent checks instead (syntax check the changed sources, parse any JSON or config they touch) and tell the owner the actual build will run in CI when the tag is pushed, so they know it is still unverified at tag time.
 
 ## 2. Bump the version
 
 Find where the version lives and bump it:
 
 - Node: bump `version` in `package.json`, and the `version` in its `package-lock.json` in exactly two places, the top object and `packages.""`. Edit only those `version` keys: a dependency can carry the same number by coincidence, so never touch a `node_modules/*` or other dependency entry, and never blind-replace the old version string across the lockfile. Two layouts go past the single package:
-  - Workspace monorepo: bump every workspace `package.json` **and** the `version` of each matching `packages.<workspace>` node in the lockfile. Miss those and the workspace nodes stay behind, which makes `npm ci` reject the lockfile as out of sync and breaks any Docker build that runs it.
-  - Several independent packages side by side, each with its own `package-lock.json` and no workspaces (say a root package and a `server/` package): apply the same two-occurrence rule to each lockfile separately.
+  - Workspace monorepo: bump every workspace `package.json` and the `version` of each matching `packages.<workspace>` node in the lockfile. Miss those and `npm ci` rejects the lockfile as out of sync, which breaks any Docker build that runs it.
+  - Several independent packages side by side, each with its own `package-lock.json` and no workspaces (say a root package and a `server/` package): apply the same two-occurrence rule to each lockfile.
 
   No dependency changes belong in a release commit.
 - Other ecosystems: `pyproject.toml` / `Cargo.toml` / `*.csproj` / `composer.json` and their lockfiles, as applicable.
 - Claude Code plugin: bump `version` in `.claude-plugin/plugin.json`, then validate the manifest (`claude plugin validate .`, or `npx -y @anthropic-ai/claude-code plugin validate .` when the CLI is not on PATH).
-- Content-only repos (a skill, docs): there is no manifest. The **tag is the version**; there is nothing to bump.
+- Content-only repos (a skill, docs): there is no manifest. The tag is the version; there is nothing to bump.
 
 ## 3. Promote the CHANGELOG
 
-In `CHANGELOG.md`, rename `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD` and add a fresh empty `[Unreleased]` section above it. Re-read every bullet in the section being promoted and apply the tightening rule from the `committing` skill (short sentences, no implementation detail, grouped under the standard English change-type names). Never rewrite already-released sections.
+In `CHANGELOG.md`, rename `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD` and add a fresh empty `[Unreleased]` section above it. Re-read every bullet in the section being promoted and apply the tightening rule from `committing` step 5 (short sentences, no implementation detail, grouped under the standard English change-type names). Never rewrite already-released sections.
 
 For example, a `## [Unreleased]` carrying this session's bullets becomes `## [1.4.0] - 2026-05-27` (today's date), with a new empty `## [Unreleased]` inserted above it.
 
-## 4. Commit, then follow the lock
+## 4. Commit, tag, and publish
 
 Make one commit: `chore(release): cut version X.Y.Z` (conventional, `Co-Authored-By` trailer kept). Before tagging, confirm the tag number, the manifest version(s) just bumped, and the new CHANGELOG heading all carry the same `X.Y.Z`; a mismatch here is the classic release-day bug and is painful to fix once the tag is public. Also confirm the working tree is clean (`git status`) and `HEAD` is the commit you mean to tag, since a public tag is cheap to create and costly to move.
 
-In both lock modes, the Release notes are the CHANGELOG section just promoted, minus its `## [X.Y.Z] - YYYY-MM-DD` line: the change-type headings and their bullets, verbatim. The Release title already carries the version, so repeating the heading only clutters the page.
+1. Once the release commit is on `main` (directly, or after the pull request merged and a `git switch main && git pull`), tag it with `git tag -a vX.Y.Z -m "vX.Y.Z"` and push `main` and the tag together: `git push origin main vX.Y.Z`. The tag message is just the version; the story lives in the CHANGELOG and the Release notes.
+2. Publish the Release with `gh release create vX.Y.Z --notes-file <file>`. The notes are the CHANGELOG section just promoted minus its `## [X.Y.Z] - YYYY-MM-DD` line, verbatim: the Release title already carries the version, so repeating the heading only clutters the page. Without `--title`, gh uses the tag name, which is fine. Without `gh`, give the owner the notes to paste on the Releases page under the tag just pushed.
 
-**`Lock: locked`:**
-
-1. Commit on the feature branch and push. If no pull request exists yet, give the owner the title and body to paste.
-2. **The owner merges the pull request.** This is the human gate of a locked repo; do not bypass it. Tell the owner explicitly and wait for confirmation before continuing. (The Release itself is published in the last sub-step below, once the tag exists.)
-3. After merge is confirmed: `git checkout main && git pull`, then `git tag -a vX.Y.Z -m "vX.Y.Z"` and `git push origin vX.Y.Z`. The tag message is just the version, in both lock modes: the story lives in the CHANGELOG and the Release notes, not in the tag. Delete the feature branch, local first then remote (`git branch -d <branch>` then `git push origin --delete <branch>`). On a squash-merge repo the branch commits were flattened into one new commit on `main`, so they are not ancestors of `main` and `git branch -d` can refuse with "not fully merged"; the work is safely merged, so use `git branch -D` to force it.
-4. Walk the owner through the GitHub Releases page: select the tag just pushed and paste the Release notes as the body. If `gh` is installed and authenticated (`gh auth status`), you may offer instead to run `gh release create vX.Y.Z --notes-file <file>` once the owner approves. Always pass the body through `--notes-file`, never inline `--notes "..."`: a multi-line body inline invites shell quoting accidents (a stray `@`, an unescaped quote). Without `--title`, gh uses the tag name as the Release title, which is fine; add `--title "..."` only if you want a different label.
-
-**`Lock: free`:**
-
-1. Commit on `main`, tag `vX.Y.Z`, and push both `main` and the tag.
-2. Publish the GitHub Release: walk the owner through the Releases page with the Release notes, or, if `gh` is authenticated and the owner approves, `gh release create vX.Y.Z --notes-file <file>`.
-
-**If the tag pushed but the Release did not publish** (either lock mode), the tag is fine: do not retag, just re-run the Release step (`gh release create vX.Y.Z --notes-file <file>` again, or the Releases page). Creating a second tag for the same version is the thing to avoid.
+If the tag pushed but the Release did not publish, the tag is fine: do not retag, re-run `gh release create` (or the Releases page). A second tag for the same version is the thing to avoid.
 
 ## 5. Confirm the release automation
 
-If there is no workflow under `.github/workflows/`, there is no automation to confirm; skip this step. Workflows that only validate (a `push` or `pull_request` trigger, no `tags:` filter and no `release:` event) are CI, not release automation: the one thing to confirm is that their run on the release commit passed.
+If there is no workflow under `.github/workflows/`, skip this step. Workflows that only validate (a `push` or `pull_request` trigger, no `tags:` filter and no `release:` event) are CI, not release automation: confirm their run on the release commit passed and move on.
 
-Many of these repos publish on a tag or Release event (a Docker image, an npm package, a GitHub Pages build). Before relying on it, read the `on:` trigger of the publishing workflow under `.github/workflows/`, because it decides when the automation fires and what to watch:
+Many of these repos publish on a tag or Release event (a Docker image, an npm package, a GitHub Pages build). Read the `on:` trigger of the publishing workflow, because it decides when the automation fires and what to watch:
 
-- `on: push: tags:` fires when you push the tag (step 4), before the Release exists. The Release you publish next is then only a notes wrapper, and the build is likely already running or finished by the time you publish it.
+- `on: push: tags:` fires when you push the tag (step 4), before the Release exists. The Release you publish next is only a notes wrapper, and the build is likely already running or finished by then.
 - `on: release: types: [published]` fires only when you publish the Release; nothing runs at the tag push.
 
-Either way, confirm the run succeeded instead of only telling the owner it was triggered: `gh run list --workflow=<file>` (or `gh run watch`) after the tag push. On a tag trigger especially, a failed build means the image or package never publishes even though the tag and Release already exist, so without this check the failure goes unnoticed.
+Either way, confirm the run succeeded rather than only telling the owner it was triggered: `gh run watch` right after the trigger, or `gh run list --workflow=<file>` later. On a tag trigger especially, a failed build means the image or package never publishes even though the tag and Release already exist, so without this check the failure goes unnoticed.
 
 When the repo is a Claude Code plugin, the release does not propagate on its own: remind the owner that each machine with the plugin installed picks it up through `/plugin update <name>` or Claude Code's automatic update.
