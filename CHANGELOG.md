@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-09-14
+
 ### Changed
 
 - The skills write in the language the repo already uses (French docs, French output; English docs, English output), following `CLAUDE.md` when it names one, instead of a `Docs language:` token; nothing has to be declared for the common case. `committing` also states that a repo's own conventions beat the skill's defaults.
