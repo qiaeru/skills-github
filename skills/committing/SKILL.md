@@ -40,7 +40,7 @@ These repos are public, so the bar is "strictly useful". Read `git diff <base>` 
 
 ## 3. Keep the docs current
 
-If the diff changes public behavior, configuration, an API or event surface, or anything a user or contributor might look up, update both `CHANGELOG.md` (under `[Unreleased]`) and the relevant documentation (`README.md` or the matching `docs/*.md`). Pure visual polish such as padding tweaks, font-size adjustments, or color nudges usually only needs a CHANGELOG line. If the repo has no `CHANGELOG.md`, do not improvise one here: skip the CHANGELOG part of this step and step 5, and suggest `scaffolding-repos` to the owner.
+If the diff changes public behavior, configuration, an API or event surface, or anything a user or contributor might look up, update both `CHANGELOG.md` (under `[Unreleased]`) and the relevant documentation (`README.md` or the matching `docs/*.md`). Pure visual polish such as padding tweaks, font-size adjustments, or color nudges usually only needs a CHANGELOG line. If the repo has no `CHANGELOG.md`, skip the CHANGELOG part of this step and step 5: many repos deliberately do without one, so do not create it unasked.
 
 Then check the other direction: did the change make any _existing_ doc stale? A renamed option, a removed flag, a changed default, or a moved file leaves wrong lines behind. Fix or delete those rather than only adding new lines. The docs must describe the code as it is after this commit.
 

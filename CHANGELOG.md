@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and no longer improvises a `CHANGELOG.md` in a repo that has none (it suggests `scaffolding-repos` instead).
-- `releasing` stops when there is nothing to release and reads the date in ISO format from the shell.
+- `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and skips the CHANGELOG in a repo that has none instead of creating one.
+- `releasing` works in a repo without a `CHANGELOG.md`: it writes the Release notes from the commits since the last tag, in the shape of the previous Release, and tags `HEAD` directly when there is nothing to bump. It stops when no commit landed since the last tag, and reads the date in ISO format from the shell.
 - The invariants script also checks that every step reference (`committing` step 5, or a bare step N inside a skill) points to an existing numbered heading, so renumbering a skill cannot break them silently.
 
 ### Fixed
@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `scaffolding-repos` renormalizes line endings only after the scaffold commit and on a clean tree, since `git add --renormalize .` stages every tracked file and would sweep unrelated edits into the normalization commit.
 - `releasing` publishes with `gh release create --verify-tag`, so a tag missing on the remote aborts the Release instead of gh tagging the default branch's latest commit.
 - `releasing` watches the triggered run by ID with `gh run watch <id> --exit-status`: without an ID the command prompts, which fails in a non-interactive shell, and without `--exit-status` a failed run exits 0.
+- `releasing` sets the notes with `gh release edit` when a publishing workflow already created the Release on the tag push, instead of re-running `gh release create` against a Release that exists.
 - README: the intro no longer presents the manual copy as the install path.
 
 ## [2.0.0] - 2026-09-14
