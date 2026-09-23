@@ -6,28 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-09-23
+
 ### Added
 
-- `releasing` reads the SemVer bump off the repo (the `[Unreleased]` headings, or the commit types since the last tag) and publishes pre-release versions with `--prerelease`. `committing` marks breaking changes with `!` so the major bump shows up at release time.
+- `releasing` derives the SemVer bump from the repo (the `[Unreleased]` headings, or the commit types since the last tag) and publishes pre-releases with `--prerelease`; `committing` marks breaking changes with `!`.
+- The invariants script checks that every step reference between or within the skills points to an existing numbered heading.
 
 ### Changed
 
-- `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and skips the CHANGELOG in a repo that has none instead of creating one.
-- `committing` says to write the `Co-Authored-By` trailer into the message file, since nothing adds it to a message passed with `--file`. `scaffolding-repos` points to `committing` for why the CHANGELOG boilerplate stays English instead of restating it.
-- `releasing` bumps Node versions with `npm version X.Y.Z --no-git-tag-version` (plus `--workspaces --include-workspace-root` in a monorepo), which edits exactly the right `package.json` and lockfile keys, and keeps the manual edit as a fallback.
-- `committing` tightens only the CHANGELOG bullets of the concern being committed, so a commit no longer rewrites another concern's entry; the full pass over `[Unreleased]` happens once, when `releasing` promotes it.
-- `releasing` works in a repo without a `CHANGELOG.md`: it writes the Release notes from the commits since the last tag, in the shape of the previous Release, and tags `HEAD` directly when there is nothing to bump. It stops when no commit landed since the last tag, and reads the date in ISO format from the shell.
-- The invariants script also checks that every step reference (`committing` step 5, or a bare step N inside a skill) points to an existing numbered heading, so renumbering a skill cannot break them silently.
+- `releasing` works in repos without a `CHANGELOG.md`: it writes the notes from the commits in the shape of the previous Release, and tags `HEAD` directly when there is nothing to bump. It also stops when no commit landed since the last tag, reads an ISO date from the shell, and bumps Node versions with `npm version --no-git-tag-version`.
+- `committing` tightens only the current concern's CHANGELOG bullets, leaving the full pass over `[Unreleased]` to `releasing`. It writes each bullet just before staging its concern, reads untracked files in the comment pass and secret scan, skips the CHANGELOG where a repo has none, and writes the `Co-Authored-By` trailer into the message file.
+- `scaffolding-repos` points to `committing` for why the CHANGELOG boilerplate stays English.
 
 ### Fixed
 
-- `scaffolding-repos` renormalizes line endings only after the scaffold commit and on a clean tree, since `git add --renormalize .` stages every tracked file and would sweep unrelated edits into the normalization commit.
-- `releasing` publishes with `gh release create --verify-tag`, so a tag missing on the remote aborts the Release instead of gh tagging the default branch's latest commit.
-- `releasing` watches the triggered run by ID with `gh run watch <id> --exit-status`: without an ID the command prompts, which fails in a non-interactive shell, and without `--exit-status` a failed run exits 0.
-- `releasing` writes the release commit subject in the repo's language, shaped like the previous release commit, instead of a hardcoded English one.
-- `committing` retries a rejected push with `git pull --rebase --autostash`, since a plain rebase refuses to run while other concerns sit unstaged, and returns to an up-to-date `main` after merging a pull request.
-- `scaffolding-repos` never overwrites an existing `.gitattributes` either, keeping the repo's own comments and merging only the missing entries.
-- `releasing` sets the notes with `gh release edit` when a publishing workflow already created the Release on the tag push, instead of re-running `gh release create` against a Release that exists.
+- `scaffolding-repos` renormalizes line endings only after the scaffold commit and on a clean tree, so unrelated edits no longer land in the normalization commit, and never overwrites an existing `.gitattributes`.
+- `releasing` publishes with `--verify-tag`, so a tag missing on the remote aborts the Release instead of gh tagging another commit, and edits the notes when a workflow already created the Release. It watches the triggered run by ID with `--exit-status`, which works in a non-interactive shell and fails on a failed run, and writes the release commit subject in the repo's language.
+- `committing` retries a rejected push with `--autostash`, since a plain rebase refuses to run while other concerns sit unstaged, and returns to an up-to-date `main` after a merge.
 - README: the intro no longer presents the manual copy as the install path.
 
 ## [2.0.0] - 2026-09-14

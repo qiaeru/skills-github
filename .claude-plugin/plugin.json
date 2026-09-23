@@ -1,7 +1,7 @@
 {
   "name": "skills-github",
   "description": "Skills for managing public GitHub repos: pre-commit checklist, release procedure, and repo scaffolding.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": {
     "name": "Qiaeru"
   },
