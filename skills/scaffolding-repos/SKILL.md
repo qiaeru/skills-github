@@ -37,7 +37,7 @@ If there is no `CHANGELOG.md`, copy `templates/CHANGELOG.md`, next to this skill
 
 The generic `.gitignore` only covers the universal set (Claude files, OS, IDE, backups). Offer to append the entries the detected stack needs, for example:
 
-- Node: `node_modules/`, `dist/`, `build/`, `*.log`, `*.tsbuildinfo`, `coverage/`, `.env`, `.env.local`
+- Node: `node_modules/`, `dist/`, `build/`, `*.log`, `*.tsbuildinfo`, `coverage/`, `.env.local`
 - Python: `__pycache__/`, `*.pyc`, `.venv/`, `.pytest_cache/`, `dist/`, `*.egg-info/`
 - Rust: `target/`
 - Always, if relevant: `.env` and any secret or local database files.
