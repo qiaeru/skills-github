@@ -50,7 +50,7 @@ When the session changed something the repo's `CLAUDE.md` records (an architectu
 
 ## 5. Tighten `[Unreleased]` in `CHANGELOG.md`
 
-Even when the current diff did not add to it, re-read every bullet under `[Unreleased]`: collapse paragraphs to one or two sentences, merge duplicate entries, and strip implementation detail (rgba values, exhaustive file paths, intermediate refactor steps) because that information already lives in the diff. Group the bullets per the Keep a Changelog convention, from the most user-visible to the most technical, under the standard change-type names: `Added` / `Changed` / `Deprecated` / `Removed` / `Fixed` / `Security`.
+Tighten the bullets this concern adds or touches, and merge them with any existing bullet they duplicate: collapse paragraphs to one or two sentences and strip implementation detail (rgba values, exhaustive file paths, intermediate refactor steps) because that information already lives in the diff. Leave the other bullets alone, so a commit never rewrites another concern's entry; `releasing` re-reads the whole section when it promotes it. Group the bullets per the Keep a Changelog convention, from the most user-visible to the most technical, under the standard change-type names: `Added` / `Changed` / `Deprecated` / `Removed` / `Fixed` / `Security`.
 
 The boilerplate and every heading stay English in a French repo too: the official French translation of Keep a Changelog shows the very same English example (title, intro sentences, change-type names, `[Unreleased]`, `[X.Y.Z] - YYYY-MM-DD`). Only the bullet content follows the repo's language. The `releasing` skill looks for the literal `[Unreleased]` when it promotes the section, so never translate it (no `[Non publié]`).
 
@@ -69,4 +69,4 @@ After, merged, detail stripped, grouped:
 - Refresh the primary button styling (color, padding, hover state).
 ```
 
-The same rule applies when `releasing` promotes the section to a numbered release.
+`releasing` applies the same rule to every bullet of the section when it promotes it to a numbered release.

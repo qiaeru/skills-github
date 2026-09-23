@@ -14,7 +14,7 @@ The Git workflow is direct-to-main by default: the skills commit on `main`, tag 
 
 ## The three skills
 
-- **`committing`** is the checklist to run before every commit and push: Git and GitHub rules (direct-to-main, conventional commits, one commit per concern, a pre-push secret scan, `gh` for the GitHub side), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the `[Unreleased]` CHANGELOG section.
+- **`committing`** is the checklist to run before every commit and push: Git and GitHub rules (direct-to-main, conventional commits, one commit per concern, a pre-push secret scan, `gh` for the GitHub side), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the CHANGELOG bullets of the concern being committed.
 - **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then commit, tag, publish the GitHub Release with `gh`, and watch the CI run that the tag or the Release triggers.
 - **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, and a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate. It is idempotent and never clobbers existing files without showing a diff first. It commits the scaffold as one `chore:` commit through `committing`, then renormalizes line endings on a clean tree in a separate commit.
 
