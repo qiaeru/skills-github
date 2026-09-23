@@ -20,7 +20,7 @@ Be consistent with what already exists: a repo whose README and docs are in Fren
 - One commit per concern: one feature, one bugfix, one refactor. The owner relies on atomic commits to review and revert, so when the worktree mixes several concerns, stage per concern with `git add <paths>`; a reflex `git add -A` is what fuses them into one commit. `CHANGELOG.md` is shared by every concern and `git add -p` is interactive, so write each concern's bullet just before staging that concern rather than all of them up front.
 - A mistake caught after the commit but before the push is fixed with `git commit --amend`. Once pushed, fix forward with a new commit: never amend or force-push published history, and here that history is `main` itself, shared by anyone who pulled it.
 - Conventional commits for messages and PR titles: `fix:`, `feat:`, `chore:`, `docs:`, `refactor:`, optionally scoped with the touched area (`fix(auth):`, `feat(timer):`). Mark a breaking change with `!` (`feat!:`, `feat(api)!:`) so `releasing` reads it as a major bump. Titles stay at or below seventy characters.
-- Keep the `Co-Authored-By` trailer the harness adds to each commit, exactly as written. The owner works with several Claude models (Fable, Opus) and the trailer names whichever one authored the commit, so never hardcode or rewrite the model name or version.
+- End each commit message with the `Co-Authored-By` trailer the harness specifies, exactly as given. Nothing adds it for you when the message comes from a file, so write it into that file. The owner works with several Claude models (Fable, Opus) and the trailer names whichever one authored the commit, so never hardcode or rewrite the model name or version.
 - Pass any multi-line commit message, PR body, or Release notes through a file (`git commit --file <file>`, `--body-file`, `--notes-file`), never inline. Inline multi-line strings invite shell quoting accidents, worse when the shell is PowerShell but the snippet was written for Bash. Write that file outside the worktree (the OS temp directory) or in a gitignored path so `git add -A` never stages it, and delete it after.
 - These repos are public, so before pushing scan `git diff <base>` for anything that must not ship: API keys and tokens, `.env` contents, absolute local paths, personal email addresses. Check `git status` for unintended staged files (build artifacts, local config, editor leftovers) too. A secret that reaches a public remote is compromised even if a later commit removes it and has to be rotated, so catching it here is the cheap moment.
 
@@ -31,7 +31,7 @@ feat(timer): warn when a speaker runs over time
 
 Show a banner once a speaker passes the allotted slot.
 
-Co-Authored-By: <the trailer exactly as the harness wrote it>
+Co-Authored-By: <the trailer exactly as the harness gave it>
 ```
 
 ## 2. Prune the comments in the diff

@@ -31,7 +31,7 @@ The rules are identical in every language; only the comments differ. The templat
 
 ## 2. Create `CHANGELOG.md`
 
-If there is no `CHANGELOG.md`, copy `templates/CHANGELOG.md`, next to this skill, to the repo root as is. The boilerplate is English whatever the repo's language: the official French translation of Keep a Changelog shows the very same English example (title, intro sentences, `[Unreleased]`), so a French repo keeps the English preamble and headings and writes only its bullets in French. Do not translate the file. Then start tracking changes under `[Unreleased]` with the standard English change-type names (`committing` step 5).
+If there is no `CHANGELOG.md`, copy `templates/CHANGELOG.md`, next to this skill, to the repo root as is, and do not translate it: its boilerplate and headings stay English whatever the repo's language, and only the bullets follow it (`committing` step 5 gives the reason and the tightening rule).
 
 ## 3. Append ecosystem entries
 
