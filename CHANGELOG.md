@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `releasing` reads the SemVer bump off the repo (the `[Unreleased]` headings, or the commit types since the last tag) and publishes pre-release versions with `--prerelease`. `committing` marks breaking changes with `!` so the major bump shows up at release time.
+
 ### Changed
 
 - `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and skips the CHANGELOG in a repo that has none instead of creating one.
