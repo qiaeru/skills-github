@@ -29,8 +29,6 @@ The rules are identical in every language; only the comments differ. The templat
 | `# Normalize line endings to LF for every text file, any OS.` | `# Normalise les fins de ligne en LF pour tout fichier texte, quel que soit l'OS.` |
 | `# Binary assets: never touch these even if git guesses wrong.` | `# Fichiers binaires : git n'y touche jamais, même s'il se trompe.` |
 
-When `.gitattributes` lands in a repo that already has commits, the new rules do not rewrite the files already in the index on their own. Run `git add --renormalize .` afterwards and look at `git status`: if files were renormalized, commit them separately (`chore: normalize line endings`) so the line-ending noise never mixes with a real change.
-
 ## 2. Create `CHANGELOG.md`
 
 If there is no `CHANGELOG.md`, copy `templates/CHANGELOG.md`, next to this skill, to the repo root as is. The boilerplate is English whatever the repo's language: the official French translation of Keep a Changelog shows the very same English example (title, intro sentences, `[Unreleased]`), so a French repo keeps the English preamble and headings and writes only its bullets in French. Do not translate the file. Then start tracking changes under `[Unreleased]` with the standard English change-type names (`committing` step 5).
@@ -47,4 +45,8 @@ The generic `.gitignore` only covers the universal set (Claude files, OS, IDE, b
 
 ## 4. Commit the scaffold
 
-Run the `committing` checklist and commit the generic files as one `chore:` commit (subject in the repo's language, for example `chore: add generic repo files`). Keep it apart from the renormalization commit of step 1 and from any code change made in the same session, so the scaffold stays a single, revertable concern.
+Run the `committing` checklist and commit the generic files as one `chore:` commit (subject in the repo's language, for example `chore: add generic repo files`). Keep it apart from the renormalization commit of step 5 and from any code change made in the same session, so the scaffold stays a single, revertable concern.
+
+## 5. Renormalize line endings
+
+When `.gitattributes` lands in a repo that already has commits, the new rules do not rewrite the files already in the index on their own. Once the scaffold commit is in, and only on a clean tree (`git status` shows nothing; stash or commit anything else first), run `git add --renormalize .`. It re-adds every tracked file as it stands in the worktree, so on a dirty tree it would stage unrelated edits along with the line endings. If files were renormalized, commit them on their own (`chore: normalize line endings`) so the line-ending noise never mixes with a real change.

@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and no longer improvises a `CHANGELOG.md` in a repo that has none (it suggests `scaffolding-repos` instead).
+- `releasing` stops when there is nothing to release and reads the date in ISO format from the shell.
+
+### Fixed
+
+- `scaffolding-repos` renormalizes line endings only after the scaffold commit and on a clean tree, since `git add --renormalize .` stages every tracked file and would sweep unrelated edits into the normalization commit.
+- `releasing` publishes with `gh release create --verify-tag`, so a tag missing on the remote aborts the Release instead of gh tagging the default branch's latest commit.
+- `releasing` watches the triggered run by ID with `gh run watch <id> --exit-status`: without an ID the command prompts, which fails in a non-interactive shell, and without `--exit-status` a failed run exits 0.
+- README: the intro no longer presents the manual copy as the install path.
+
 ## [2.0.0] - 2026-09-14
 
 ### Changed
