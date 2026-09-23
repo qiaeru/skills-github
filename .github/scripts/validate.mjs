@@ -156,9 +156,36 @@ for (const comment of tableEnglish) {
   }
 }
 
+// 7. Step references resolve: "`committing` step 5" needs a "## 5." heading
+// in that skill, and a bare "step 4" inside a SKILL.md points to its own
+// headings. Renumbering a skill would otherwise break these silently. The
+// README only counts references that name a skill.
+const skillNames = readdirSync('skills').filter((n) => statSync(path.join('skills', n)).isDirectory());
+const stepHeadings = new Map(
+  skillNames.map((n) => [
+    n,
+    new Set([...read(path.join('skills', n, 'SKILL.md')).matchAll(/^## (\d+)\./gm)].map((m) => m[1])),
+  ]),
+);
+const STEP_PATTERN = /(?:`([a-z-]+)` )?\bsteps? (\d+(?:(?:,? and |, | to )\d+)*)/gi;
+for (const file of ['README.md', ...skillNames.map((n) => path.join('skills', n, 'SKILL.md'))]) {
+  const own = file.startsWith('skills') ? file.split(path.sep)[1] : null;
+  const text = read(file);
+  for (const m of text.matchAll(STEP_PATTERN)) {
+    const target = m[1] && stepHeadings.has(m[1]) ? m[1] : m[1] ? null : own;
+    if (!target) continue;
+    const line = text.slice(0, m.index).split('\n').length;
+    for (const step of m[2].match(/\d+/g)) {
+      if (!stepHeadings.get(target).has(step)) {
+        report(file, line, `"${m[0]}" points to step ${step}, which ${target}/SKILL.md has no "## ${step}." heading for`);
+      }
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error(`${errors.length} invariant error(s):`);
   for (const e of errors) console.error(`  ${e}`);
   process.exit(1);
 }
-console.log(`Invariants checked over ${proseFiles.length} files: frontmatter, links, punctuation, version, Unreleased heading, translation table.`);
+console.log(`Invariants checked over ${proseFiles.length} files: frontmatter, links, punctuation, version, Unreleased heading, translation table, step references.`);

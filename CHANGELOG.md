@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and no longer improvises a `CHANGELOG.md` in a repo that has none (it suggests `scaffolding-repos` instead).
 - `releasing` stops when there is nothing to release and reads the date in ISO format from the shell.
+- The invariants script also checks that every step reference (`committing` step 5, or a bare step N inside a skill) points to an existing numbered heading, so renumbering a skill cannot break them silently.
 
 ### Fixed
 
