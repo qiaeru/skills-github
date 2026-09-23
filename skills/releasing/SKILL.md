@@ -19,11 +19,7 @@ If the project has a typecheck, build, or validation step (a lint script or a re
 
 Find where the version lives and bump it:
 
-- Node: bump `version` in `package.json`, and the `version` in its `package-lock.json` in exactly two places, the top object and `packages.""`. Edit only those `version` keys: a dependency can carry the same number by coincidence, so never touch a `node_modules/*` or other dependency entry, and never blind-replace the old version string across the lockfile. Two layouts go past the single package:
-  - Workspace monorepo: bump every workspace `package.json` and the `version` of each matching `packages.<workspace>` node in the lockfile. Miss those and `npm ci` rejects the lockfile as out of sync, which breaks any Docker build that runs it.
-  - Several independent packages side by side, each with its own `package-lock.json` and no workspaces (say a root package and a `server/` package): apply the same two-occurrence rule to each lockfile.
-
-  No dependency changes belong in a release commit.
+- Node: run `npm version X.Y.Z --no-git-tag-version`, which bumps `package.json` and the two `version` keys of `package-lock.json` (the top object and `packages.""`) without committing or tagging. In a workspace monorepo add `--workspaces --include-workspace-root` so every workspace `package.json` and its `packages.<workspace>` lockfile node move too; miss those and `npm ci` rejects the lockfile as out of sync, which breaks any Docker build that runs it. Several independent packages side by side, each with its own lockfile and no workspaces (say a root package and a `server/` package): run the command in each folder. Then check `git diff` touches only `version` keys. When `npm` is unavailable, edit those same keys by hand and never blind-replace the old version string across the lockfile: a dependency can carry the same number by coincidence. No dependency changes belong in a release commit.
 - Other ecosystems: `pyproject.toml` / `Cargo.toml` / `*.csproj` / `composer.json` and their lockfiles, as applicable.
 - Claude Code plugin: bump `version` in `.claude-plugin/plugin.json`, then validate the manifest (`claude plugin validate .`, or `npx -y @anthropic-ai/claude-code plugin validate .` when the CLI is not on PATH).
 - Content-only repos (a skill, docs): there is no manifest. The tag is the version; there is nothing to bump.

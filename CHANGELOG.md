@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `committing` reads untracked files too in the comment pass and the secret scan, writes each concern's CHANGELOG bullet just before staging that concern, and skips the CHANGELOG in a repo that has none instead of creating one.
 - `committing` says to write the `Co-Authored-By` trailer into the message file, since nothing adds it to a message passed with `--file`. `scaffolding-repos` points to `committing` for why the CHANGELOG boilerplate stays English instead of restating it.
+- `releasing` bumps Node versions with `npm version X.Y.Z --no-git-tag-version` (plus `--workspaces --include-workspace-root` in a monorepo), which edits exactly the right `package.json` and lockfile keys, and keeps the manual edit as a fallback.
 - `releasing` works in a repo without a `CHANGELOG.md`: it writes the Release notes from the commits since the last tag, in the shape of the previous Release, and tags `HEAD` directly when there is nothing to bump. It stops when no commit landed since the last tag, and reads the date in ISO format from the shell.
 - The invariants script also checks that every step reference (`committing` step 5, or a bare step N inside a skill) points to an existing numbered heading, so renumbering a skill cannot break them silently.
 
