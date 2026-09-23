@@ -7,7 +7,7 @@ description: Scaffold or refresh the generic files of the owner's public GitHub 
 
 Install or refresh the three files every one of the owner's repos should carry: a generic `.gitignore`, an LF-normalizing `.gitattributes`, and a `CHANGELOG.md` (Keep a Changelog + SemVer). The dotfile comments and the CHANGELOG bullets follow the repo's language, per `committing` step 0.
 
-The skill is idempotent and non-destructive. If a file already exists, show a diff of what you would change and ask before writing. Never clobber an existing `CHANGELOG.md` or hand-tuned `.gitignore`; merge missing entries in instead.
+The skill is idempotent and non-destructive. If a file already exists, show a diff of what you would change and ask before writing. Never clobber an existing file, whether `CHANGELOG.md`, a hand-tuned `.gitignore`, or a `.gitattributes` whose comments record a project-specific reason: merge the missing entries in and keep the repo's own comments.
 
 While in the repo, check for a `LICENSE` file. If there is none, flag it to the owner: these repos are public, and a public repo without a license is all-rights-reserved by default, which usually contradicts the intent. Do not pick or install a license yourself; the choice belongs to the owner.
 

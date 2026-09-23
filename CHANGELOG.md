@@ -22,6 +22,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `scaffolding-repos` renormalizes line endings only after the scaffold commit and on a clean tree, since `git add --renormalize .` stages every tracked file and would sweep unrelated edits into the normalization commit.
 - `releasing` publishes with `gh release create --verify-tag`, so a tag missing on the remote aborts the Release instead of gh tagging the default branch's latest commit.
 - `releasing` watches the triggered run by ID with `gh run watch <id> --exit-status`: without an ID the command prompts, which fails in a non-interactive shell, and without `--exit-status` a failed run exits 0.
+- `releasing` writes the release commit subject in the repo's language, shaped like the previous release commit, instead of a hardcoded English one.
+- `committing` retries a rejected push with `git pull --rebase --autostash`, since a plain rebase refuses to run while other concerns sit unstaged, and returns to an up-to-date `main` after merging a pull request.
+- `scaffolding-repos` never overwrites an existing `.gitattributes` either, keeping the repo's own comments and merging only the missing entries.
 - `releasing` sets the notes with `gh release edit` when a publishing workflow already created the Release on the tag push, instead of re-running `gh release create` against a Release that exists.
 - README: the intro no longer presents the manual copy as the install path.
 
