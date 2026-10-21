@@ -27,6 +27,7 @@ The rules are identical in every language; only the comments differ. The templat
 | `# Editors and IDEs.` | `# Éditeurs et IDE.` |
 | `# Backups and temporary files.` | `# Sauvegardes et fichiers temporaires.` |
 | `# Normalize line endings to LF for every text file, any OS.` | `# Normalise les fins de ligne en LF pour tout fichier texte, quel que soit l'OS.` |
+| `# Windows batch scripts: cmd.exe misreads them with LF endings.` | `# Scripts batch Windows : cmd.exe les lit mal avec des fins de ligne LF.` |
 | `# Binary assets: never touch these even if git guesses wrong.` | `# Fichiers binaires : git n'y touche jamais, même s'il se trompe.` |
 
 ## 2. Create `CHANGELOG.md`
