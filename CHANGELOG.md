@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-10-21
+
 ### Added
 
 - `scaffolding-repos` offers a Dependabot configuration that keeps the GitHub Actions of a repo with workflows up to date.
