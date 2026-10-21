@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 
 - `scaffolding-repos` keeps Windows batch scripts (`.bat`, `.cmd`) in CRLF, since cmd.exe misreads them with LF endings.
+- `releasing` looks up the triggered run by the full commit hash, since `gh run list --commit` matches nothing with an abbreviated one.
 
 ## [2.1.0] - 2026-09-23
 
