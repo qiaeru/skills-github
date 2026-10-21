@@ -9,7 +9,7 @@ Install or refresh the three files every one of the owner's repos should carry: 
 
 The skill is idempotent and non-destructive. If a file already exists, show a diff of what you would change and ask before writing. Never clobber an existing file, whether `CHANGELOG.md`, a hand-tuned `.gitignore`, or a `.gitattributes` whose comments record a project-specific reason: merge the missing entries in and keep the repo's own comments.
 
-While in the repo, check for a `LICENSE` file. If there is none, flag it to the owner: these repos are public, and a public repo without a license is all-rights-reserved by default, which usually contradicts the intent. Do not pick or install a license yourself; the choice belongs to the owner.
+While in the repo, check for a `LICENSE` file. If there is none and the repo is public (`gh repo view --json visibility -q .visibility`), flag it to the owner: a public repo without a license is all-rights-reserved by default, which usually contradicts the intent. A private repo needs no such warning. Do not pick a license yourself; the choice belongs to the owner. Once they name one, `gh repo license view <spdx-id>` (for example `mit`) prints its text: fill its placeholders, such as `[year]` and `[fullname]`, and write it to `LICENSE`.
 
 ## 1. Write `.gitignore` and `.gitattributes`
 
@@ -41,6 +41,7 @@ The generic `.gitignore` only covers the universal set (Claude files, OS, IDE, b
 - Node: `node_modules/`, `dist/`, `build/`, `*.log`, `*.tsbuildinfo`, `coverage/`, `.env.local`
 - Python: `__pycache__/`, `*.pyc`, `.venv/`, `.pytest_cache/`, `dist/`, `*.egg-info/`
 - Rust: `target/`
+- Another stack: start from GitHub's official template, `gh repo gitignore view <Stack>` (`gh repo gitignore list` names them), and pick the entries the repo needs rather than pasting the whole file, whose English comments would break the language rule in a non-English repo.
 - Always, if relevant: `.env` and any secret or local database files.
 - Claude Code: the template ignores `.claude/` whole. If the repo carries a `.claude/settings.json` meant to be shared (a team permission allowlist, hooks), replace the `.claude/` line with `.claude/*` followed by `!.claude/settings.json`. The `*` matters: git cannot re-include a file whose parent directory is excluded, so a bare `!` after `.claude/` does nothing. `settings.local.json` and the rest of the folder stay ignored.
 
