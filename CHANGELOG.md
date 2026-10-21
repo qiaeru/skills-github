@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `scaffolding-repos` offers a Dependabot configuration that keeps the GitHub Actions of a repo with workflows up to date.
+
 ### Changed
 
 - `scaffolding-repos` flags a missing `LICENSE` only in a public repo, writes the license the owner picks with `gh repo license view`, and starts from GitHub's official `.gitignore` templates for a stack it does not list.

@@ -16,7 +16,7 @@ The Git workflow is direct-to-main by default: the skills commit on `main`, tag 
 
 - **`committing`** is the checklist to run before every commit and push: Git and GitHub rules (direct-to-main, conventional commits, one commit per concern, a pre-push secret scan, `gh` for the GitHub side), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the CHANGELOG bullets of the concern being committed.
 - **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then commit, tag, publish the GitHub Release with `gh`, and watch the CI run that the tag or the Release triggers.
-- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, and a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate. It is idempotent and never clobbers existing files without showing a diff first. It commits the scaffold as one `chore:` commit through `committing`, then renormalizes line endings on a clean tree in a separate commit.
+- **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, and a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate. In a repo with GitHub workflows it also offers a Dependabot configuration that keeps the actions up to date. It is idempotent and never clobbers existing files without showing a diff first. It commits the scaffold as one `chore:` commit through `committing`, then renormalizes line endings on a clean tree in a separate commit.
 
 ## Layout
 
@@ -48,10 +48,11 @@ skills-github/
         └── templates/
             ├── gitignore
             ├── gitattributes
-            └── CHANGELOG.md
+            ├── CHANGELOG.md
+            └── dependabot.yml
 ```
 
-The `gitignore` and `gitattributes` templates under `scaffolding-repos/templates/` are stored without their leading dot so git tracks them; `scaffolding-repos` renames them on install. `CHANGELOG.md` copies as is, whatever the repo's language.
+The `gitignore` and `gitattributes` templates under `scaffolding-repos/templates/` are stored without their leading dot so git tracks them; `scaffolding-repos` renames them on install. `CHANGELOG.md` and `dependabot.yml` copy as is, whatever the repo's language.
 
 The repository doubles as a Claude Code plugin named `skills-github` and as its own plugin marketplace: `plugin.json` describes the plugin (the whole repository, with the skills under `skills/`), and `marketplace.json` lists it so Claude Code can install and update it straight from GitHub.
 
