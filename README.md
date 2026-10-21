@@ -10,7 +10,7 @@ The skills stay consistent with the repo: a repo whose README and docs are in Fr
 
 The Keep a Changelog boilerplate (title, intro sentences, and headings such as `Added`, `Fixed`, `[Unreleased]`) stays English either way: the official French translation of Keep a Changelog shows the same untranslated example, so only the bullets follow the repo's language. The skill instructions themselves are in English; only the output follows the repo.
 
-The Git workflow is direct-to-main by default: the skills commit on `main`, tag on it, and publish the Release from it. They open a branch and a pull request only when you ask for one or the repo requires it (a protected `main`). When the `gh` CLI is installed and authenticated, Claude does the GitHub side itself (pull requests, merges once you approve, Releases, CI runs) instead of walking you through the website. Everywhere, the repo's own conventions (its `CLAUDE.md`, its existing docs, its history) beat the skill's defaults.
+The Git workflow is direct-to-main by default: the skills commit on the repo's default branch (`main`, or whatever the remote reports, `master` included), tag on it, and publish the Release from it. They open a branch and a pull request only when you ask for one or the repo requires it (a protected default branch). When the `gh` CLI is installed and authenticated, Claude does the GitHub side itself (pull requests, merges once you approve, Releases, CI runs) instead of walking you through the website. Everywhere, the repo's own conventions (its `CLAUDE.md`, its existing docs, its history) beat the skill's defaults.
 
 ## The three skills
 
@@ -99,7 +99,7 @@ These skills handle Git and GitHub hygiene, not the substance of your work. A fe
 
 - They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG, and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
 - They do not judge the code. They check comments, docs freshness, and conventional-commit form, not correctness, design, or factual accuracy.
-- They model one workflow, direct-to-main with a pull request as the exception. A monorepo release train, a signed-tag policy, or a non-`main` default branch may need manual steps the skills do not cover.
+- They model one workflow, direct-to-main with a pull request as the exception. A monorepo release train or a signed-tag policy may need manual steps the skills do not cover.
 - The generic dotfile comments exist in English and French only; a repo in another language gets the English comments.
 
 ## License
