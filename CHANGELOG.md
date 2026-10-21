@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `scaffolding-repos` flags a missing `LICENSE` only in a public repo, writes the license the owner picks with `gh repo license view`, and starts from GitHub's official `.gitignore` templates for a stack it does not list.
 - The skills read the repo's default branch instead of assuming `main`, so a repo still on `master` follows the same workflow.
 - `committing` merges a pull request only while its head is still the one the owner approved.
+- `releasing` notes that immutable releases lock the tag once the Release is published, so a wrong release is fixed with a new patch version.
 
 ### Fixed
 
