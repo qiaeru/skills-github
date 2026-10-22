@@ -4,13 +4,13 @@
     "name": "Qiaeru"
   },
   "metadata": {
-    "description": "Marketplace for the skills-github plugin: pre-commit checklist, release procedure, and repo scaffolding for public GitHub repos."
+    "description": "Marketplace for the skills-github plugin: three skills that check commits, cut releases, and scaffold the generic files of public GitHub repos."
   },
   "plugins": [
     {
       "name": "skills-github",
       "source": "./",
-      "description": "Skills for managing public GitHub repos: pre-commit checklist, release procedure, and repo scaffolding."
+      "description": "Manage public GitHub repos with three skills: a pre-commit and pre-push checklist, a release procedure, and repo scaffolding."
     }
   ]
 }

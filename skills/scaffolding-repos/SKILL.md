@@ -1,6 +1,6 @@
 ---
 name: scaffolding-repos
-description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting, normalizing, or auditing a repo's setup: the generic .gitignore, the LF .gitattributes, and a Keep a Changelog / SemVer CHANGELOG.md, with comments in the repo's language.
+description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting, normalizing, or auditing a repo's setup. Covers the generic .gitignore, the LF .gitattributes, and a Keep a Changelog and SemVer CHANGELOG.md, with comments in the repo's language.
 ---
 
 # Repo setup

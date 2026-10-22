@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The skill and plugin descriptions follow the shape the owner's other plugins share: what the skill does, then when to use it, then how.
+
 ## [2.2.0] - 2026-10-21
 
 ### Added

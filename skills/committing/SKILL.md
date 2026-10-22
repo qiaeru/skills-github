@@ -1,6 +1,6 @@
 ---
 name: committing
-description: Pre-commit and pre-push checklist for the owner's public GitHub repos. Run before every commit, push, or PR, even a one-line change or a plain "push this". Covers the Git and gh workflow (direct-to-main, conventional commits), comment pruning, and docs/CLAUDE.md/CHANGELOG upkeep.
+description: Run the pre-commit and pre-push checklist of the owner's public GitHub repos. Use before every commit, push, or PR, even a one-line change or a plain "push this". Covers the Git and gh workflow (direct-to-main, conventional commits), comment pruning, and docs/CLAUDE.md/CHANGELOG upkeep.
 ---
 
 # Pre-commit / pre-push checklist

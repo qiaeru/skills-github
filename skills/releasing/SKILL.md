@@ -1,6 +1,6 @@
 ---
 name: releasing
-description: Cut a new version of one of the owner's public GitHub repos. Use whenever the owner asks to publish, ship, tag, bump, or release a version (patch/minor/major, CHANGELOG promotion, tag, GitHub Release). Commits, tags, and publishes the Release with gh, in the repo's language.
+description: Cut a new version of one of the owner's public GitHub repos. Use when the owner asks to publish, ship, tag, bump, or release a version (patch, minor, major). Promotes the CHANGELOG, commits, tags, and publishes the GitHub Release with gh, in the repo's language.
 ---
 
 # Release procedure
