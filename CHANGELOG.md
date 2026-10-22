@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - The skill and plugin descriptions follow the shape the owner's other plugins share: what the skill does, then when to use it, then how.
+- `releasing` and the README state their points plainly, without stock contrasts or announced emphasis.
 
 ## [2.2.0] - 2026-10-21
 

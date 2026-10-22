@@ -95,7 +95,7 @@ Once the skills are installed and Claude Code is restarted, Claude uses them in 
 
 ## Limits
 
-These skills handle Git and GitHub hygiene, not the substance of your work. A few things they deliberately leave to you:
+These skills handle Git and GitHub hygiene and leave the substance of your work to you.
 
 - They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG, and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
 - They do not judge the code. They check comments, docs freshness, and conventional-commit form, not correctness, design, or factual accuracy.
