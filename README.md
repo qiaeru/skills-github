@@ -2,7 +2,7 @@
 
 Reusable Claude Code skills for managing public GitHub repos at commit, push, and release time, plus the generic repo files every project should carry.
 
-This repo is the single source for three skills, installed as a Claude Code plugin (or copied by hand into `.claude/skills/`, see [Installation](#installation)). The skills stay generic: instead of hardcoding one project's layout, they adapt to the target repo, its language and its conventions.
+This repo is the single source for three skills, installed as a Claude Code plugin (or copied by hand into `.claude/skills/`, see [Installation](#installation)). The skills stay generic: instead of hardcoding one project's layout, they adapt to the target repo, its language, and its conventions.
 
 ## The repo's language and workflow
 
