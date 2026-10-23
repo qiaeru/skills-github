@@ -66,7 +66,7 @@ After, merged, detail stripped, grouped:
 ```text
 ### Changed
 
-- Refresh the primary button styling (color, padding, hover state).
+- Refresh the primary button styling (color, padding).
 ```
 
 `releasing` applies the same rule to every bullet of the section when it promotes it to a numbered release.

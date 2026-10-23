@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The skill and plugin descriptions follow the shape the owner's other plugins share: what the skill does, then when to use it, then how.
 - `releasing` and the README state their points plainly, without stock contrasts or announced emphasis.
 
+### Fixed
+
+- The CHANGELOG example in `committing` no longer adds a detail its "before" version lacks.
+
 ## [2.2.0] - 2026-10-21
 
 ### Added
