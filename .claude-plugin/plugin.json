@@ -3,7 +3,7 @@
   "name": "skills-github",
   "description": "Manage public GitHub repos with three skills: a pre-commit and pre-push checklist, a release procedure, and repo scaffolding.",
   "keywords": ["github", "git", "commits", "conventional-commits", "releases", "changelog", "scaffolding", "skill"],
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": {
     "name": "Qiaeru"
   },
