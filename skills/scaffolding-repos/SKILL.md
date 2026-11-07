@@ -5,7 +5,7 @@ description: Scaffold or refresh the generic files of the owner's public GitHub 
 
 # Repo setup
 
-Install or refresh the three files every one of the owner's repos should carry: a generic `.gitignore`, an LF-normalizing `.gitattributes`, and a `CHANGELOG.md` (Keep a Changelog + SemVer). A repo with GitHub workflows is also offered a Dependabot configuration (step 4). The dotfile comments and the CHANGELOG bullets follow the repo's language, per `committing` step 0.
+Install or refresh the three files every one of the owner's repos should carry: a generic `.gitignore`, an LF-normalizing `.gitattributes`, and a `CHANGELOG.md` (Keep a Changelog + SemVer). A repo with GitHub workflows is also offered a Dependabot configuration and pinned third-party actions (step 4). The dotfile comments and the CHANGELOG bullets follow the repo's language, per `committing` step 0.
 
 The skill is idempotent and non-destructive. If a file already exists, show a diff of what you would change and ask before writing. Never clobber an existing file, whether `CHANGELOG.md`, a hand-tuned `.gitignore`, or a `.gitattributes` whose comments record a project-specific reason: merge the missing entries in and keep the repo's own comments.
 
@@ -51,6 +51,8 @@ The generic `.gitignore` only covers the universal set (Claude files, local secr
 ## 4. Offer Dependabot
 
 When the repo has workflows under `.github/workflows/` and no `.github/dependabot.yml`, offer to copy `templates/dependabot.yml`, next to this skill, to `.github/dependabot.yml`. It keeps the GitHub Actions the workflows pin up to date, which matters for security since an action runs with the workflow's token. The `cooldown` skips versions younger than a week, the ones most likely to be yanked or compromised, and the `chore` prefix keeps Dependabot's commits conventional. Offer to add one entry per detected package ecosystem (`npm`, `pip`, `cargo`, `docker`, and so on) in the same shape. Each entry opens its own pull requests, so the owner may decline: do not insist.
+
+Once Dependabot covers the actions, offer to pin the third-party ones (outside `actions/` and `github/`) to a full commit SHA, keeping the version as a comment: `uses: owner/action@<sha> # v3.1.0`. `gh api repos/<owner>/<action>/commits/<tag> --jq .sha` prints the SHA. A tag can be moved to malicious code, as in the tj-actions compromise, and a SHA cannot. Dependabot updates the SHA and its comment together, so without it the pins go stale. Commit this apart from the scaffold, for example as `ci: pin third-party actions`.
 
 ## 5. Commit the scaffold
 
