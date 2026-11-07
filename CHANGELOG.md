@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - `committing` lists every conventional commit type it accepts, sets the shape of the subject and body, and links resolved issues and the repo's pull request template.
+- `releasing` picks the version bump for every change type, `Deprecated`, `Security`, and `Changed` included.
 
 ### Fixed
 
