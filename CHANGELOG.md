@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-11-07
+
 ### Added
 
 - `committing` runs the repo's fastest check before pushing a code change and watches the CI run after the push.
