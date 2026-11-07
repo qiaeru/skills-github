@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `committing` scans the whole content on a repo's first push, which has no pushed commit to compare with.
 - `committing` says what to do when a hook fails, when a rebase stops on a conflict, and when a merge or rebase is already in progress.
+- `releasing` publishes a Release with files through a draft when the repo has immutable releases on, since nothing can be attached afterward.
 
 ## [2.2.1] - 2026-10-23
 
