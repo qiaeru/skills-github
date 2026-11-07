@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `committing` lists every conventional commit type it accepts, sets the shape of the subject and body, and links resolved issues and the repo's pull request template.
+
 ### Fixed
 
 - `committing` scans the whole content on a repo's first push, which has no pushed commit to compare with.
