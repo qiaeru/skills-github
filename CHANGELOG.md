@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `committing` lists every conventional commit type it accepts, sets the shape of the subject and body, and links resolved issues and the repo's pull request template.
 - `releasing` picks the version bump for every change type, `Deprecated`, `Security`, and `Changed` included.
+- The `.gitignore` template ignores `.env` files and private keys, and `scaffolding-repos` flags files that stay tracked after a new `.gitignore`.
 
 ### Fixed
 

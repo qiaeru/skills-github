@@ -23,6 +23,7 @@ The rules are identical in every language; only the comments differ. The templat
 | English comment | French comment |
 | --- | --- |
 | `# Claude Code working files, local to the dev machine.` | `# Fichiers de travail Claude Code, internes au poste de développement.` |
+| `# Local secrets and private keys.` | `# Secrets locaux et clés privées.` |
 | `# Operating systems.` | `# Systèmes d'exploitation.` |
 | `# Editors and IDEs.` | `# Éditeurs et IDE.` |
 | `# Backups and temporary files.` | `# Sauvegardes et fichiers temporaires.` |
@@ -30,19 +31,21 @@ The rules are identical in every language; only the comments differ. The templat
 | `# Windows batch scripts: cmd.exe misreads them with LF endings.` | `# Scripts batch Windows : cmd.exe les lit mal avec des fins de ligne LF.` |
 | `# Binary assets: never touch these even if git guesses wrong.` | `# Fichiers binaires : git n'y touche jamais, même s'il se trompe.` |
 
+A `.gitignore` only affects untracked files. Once it is written, `git ls-files -ci --exclude-standard` lists the tracked files it now matches. Show that list to the owner and run `git rm --cached <path>` only on the files they confirm, since some repos track `.vscode/` or a `CLAUDE.md` on purpose. History keeps the old versions, so a secret found there has to be rotated.
+
 ## 2. Create `CHANGELOG.md`
 
 If there is no `CHANGELOG.md`, copy `templates/CHANGELOG.md`, next to this skill, to the repo root as is, and do not translate it: its boilerplate and headings stay English whatever the repo's language, and only the bullets follow it (`committing` step 5 gives the reason and the tightening rule).
 
 ## 3. Append ecosystem entries
 
-The generic `.gitignore` only covers the universal set (Claude files, OS, IDE, backups). Offer to append the entries the detected stack needs, for example:
+The generic `.gitignore` only covers the universal set (Claude files, local secrets, OS, IDE, backups). Offer to append the entries the detected stack needs, for example:
 
-- Node: `node_modules/`, `dist/`, `build/`, `*.log`, `*.tsbuildinfo`, `coverage/`, `.env.local`
+- Node: `node_modules/`, `dist/`, `build/`, `*.log`, `*.tsbuildinfo`, `coverage/`
 - Python: `__pycache__/`, `*.pyc`, `.venv/`, `.pytest_cache/`, `dist/`, `*.egg-info/`
 - Rust: `target/`
 - Another stack: start from GitHub's official template, `gh repo gitignore view <Stack>` (`gh repo gitignore list` names them), and pick the entries the repo needs rather than pasting the whole file, whose English comments would break the language rule in a non-English repo.
-- Always, if relevant: `.env` and any secret or local database files.
+- Always, if relevant: any other secret or local database file, since the template only covers `.env` files and `*.pem` and `*.key` keys.
 - Claude Code: the template ignores `.claude/` whole. If the repo carries a `.claude/settings.json` meant to be shared (a team permission allowlist, hooks), replace the `.claude/` line with `.claude/*` followed by `!.claude/settings.json`. The `*` matters: git cannot re-include a file whose parent directory is excluded, so a bare `!` after `.claude/` does nothing. `settings.local.json` and the rest of the folder stay ignored.
 
 ## 4. Offer Dependabot
