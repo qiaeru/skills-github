@@ -31,3 +31,6 @@ $RECYCLE.BIN/
 *.bak
 *.tmp
 *.orig
+
+# Eval run results.
+evals/results/

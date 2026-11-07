@@ -9,5 +9,5 @@
     "MD050": { "style": "asterisk" }
   },
   "globs": ["**/*.md"],
-  "ignores": ["node_modules/**"]
+  "ignores": ["node_modules/**", "evals/**"]
 }

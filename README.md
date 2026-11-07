@@ -32,6 +32,7 @@ skills-github/
 │   │   └── validate.mjs
 │   └── workflows/
 │       └── validate.yml
+├── evals/
 ├── .gitattributes
 ├── .gitignore
 ├── .markdownlint-cli2.jsonc
@@ -53,6 +54,8 @@ skills-github/
 ```
 
 The `gitignore` and `gitattributes` templates under `scaffolding-repos/templates/` are stored without their leading dot so git tracks them; `scaffolding-repos` renames them on install. `CHANGELOG.md` and `dependabot.yml` copy as is, whatever the repo's language.
+
+The `evals/` folder holds trigger tests for the skill descriptions, run on demand by `claude plugin eval` and billed as model usage, so CI leaves them out.
 
 The repository doubles as a Claude Code plugin named `skills-github` and as its own plugin marketplace: `plugin.json` describes the plugin (the whole repository, with the skills under `skills/`), and `marketplace.json` lists it so Claude Code can install and update it straight from GitHub.
 
