@@ -14,7 +14,7 @@ The Git workflow is direct-to-main by default: the skills commit on the repo's d
 
 ## The three skills
 
-- **`committing`** is the checklist to run before every commit and push: Git and GitHub rules (direct-to-main, conventional commits, one commit per concern, a pre-push secret scan, `gh` for the GitHub side), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the CHANGELOG bullets of the concern being committed.
+- **`committing`** is the checklist to run before every commit and push: Git and GitHub rules (direct-to-main, conventional commits, one commit per concern, a pre-push secret scan, a quick check before the push and the CI run after it, `gh` for the GitHub side), a keep-or-delete pass on every comment in the diff, docs updates, and tightening the CHANGELOG bullets of the concern being committed.
 - **`releasing`** cuts a new version: pick the SemVer bump, bump the manifest(s) if any, promote `[Unreleased]` to a dated section, then commit, tag, publish the GitHub Release with `gh`, and watch the CI run that the tag or the Release triggers.
 - **`scaffolding-repos`** scaffolds or refreshes the generic files in a repo: the `.gitignore` (ignores `CLAUDE.md`, `.claude/`, OS, and IDE files), the LF-normalizing `.gitattributes`, and a Keep a Changelog / SemVer `CHANGELOG.md` with the upstream English boilerplate. In a repo with GitHub workflows it also offers a Dependabot configuration that keeps the actions up to date. It is idempotent and never clobbers existing files without showing a diff first. It commits the scaffold as one `chore:` commit through `committing`, then renormalizes line endings on a clean tree in a separate commit.
 
@@ -97,7 +97,7 @@ Once the skills are installed and Claude Code is restarted, Claude uses them in 
 
 These skills handle Git and GitHub hygiene and leave the substance of your work to you.
 
-- They do not run your test suite. They assume you verify the code yourself before asking for a commit or a release; they gate the docs, the commit message, the CHANGELOG, and the release mechanics. The one exception is `releasing`, which runs the project's typecheck or build (when it has one) before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
+- They do not replace your own verification. They gate the docs, the commit message, the CHANGELOG, and the release mechanics, and run only the checks the repo already defines: `committing` runs the fastest one before pushing a code change, since direct-to-main has no pull request to catch a failure, and `releasing` runs the typecheck or build before tagging, since a broken build is far cheaper to catch before the tag than after a published Release triggers a downstream build.
 - They do not judge the code. They check comments, docs freshness, and conventional-commit form, not correctness, design, or factual accuracy.
 - They model one workflow, direct-to-main with a pull request as the exception. A monorepo release train or a signed-tag policy may need manual steps the skills do not cover.
 - The generic dotfile comments exist in English and French only; a repo in another language gets the English comments.

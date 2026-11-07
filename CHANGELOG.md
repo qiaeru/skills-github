@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `committing` runs the repo's fastest check before pushing a code change and watches the CI run after the push.
+
 ### Changed
 
 - `committing` lists every conventional commit type it accepts, sets the shape of the subject and body, and links resolved issues and the repo's pull request template.
