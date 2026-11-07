@@ -1,11 +1,11 @@
 ---
 name: scaffolding-repos
-description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting, normalizing, or auditing a repo's setup. Covers the generic .gitignore, the LF .gitattributes, and a Keep a Changelog and SemVer CHANGELOG.md, with comments in the repo's language.
+description: Scaffold or refresh the generic files of the owner's public GitHub repos. Use when starting, normalizing, or auditing a repo's setup. Covers the .gitignore, the LF .gitattributes, a Keep a Changelog and SemVer CHANGELOG.md, and the GitHub security settings, with comments in the repo's language.
 ---
 
 # Repo setup
 
-Install or refresh the three files every one of the owner's repos should carry: a generic `.gitignore`, an LF-normalizing `.gitattributes`, and a `CHANGELOG.md` (Keep a Changelog + SemVer). A repo with GitHub workflows is also offered a Dependabot configuration and pinned third-party actions (step 4). The dotfile comments and the CHANGELOG bullets follow the repo's language, per `committing` step 0.
+Install or refresh the three files every one of the owner's repos should carry: a generic `.gitignore`, an LF-normalizing `.gitattributes`, and a `CHANGELOG.md` (Keep a Changelog + SemVer). A repo with GitHub workflows is also offered a Dependabot configuration and pinned third-party actions (step 4), and a public repo gets an audit of its GitHub security settings (step 7). The dotfile comments and the CHANGELOG bullets follow the repo's language, per `committing` step 0.
 
 The skill is idempotent and non-destructive. If a file already exists, show a diff of what you would change and ask before writing. Never clobber an existing file, whether `CHANGELOG.md`, a hand-tuned `.gitignore`, or a `.gitattributes` whose comments record a project-specific reason: merge the missing entries in and keep the repo's own comments.
 
@@ -61,3 +61,20 @@ Run the `committing` checklist and commit the generic files as one `chore:` comm
 ## 6. Renormalize line endings
 
 When `.gitattributes` lands in a repo that already has commits, the new rules do not rewrite the files already in the index on their own. Once the scaffold commit is in, and only on a clean tree (`git status` shows nothing; stash or commit anything else first), run `git add --renormalize .`. It re-adds every tracked file as it stands in the worktree, so on a dirty tree it would stage unrelated edits along with the line endings. If files were renormalized, commit them on their own (`chore: normalize line endings`) so the line-ending noise never mixes with a real change.
+
+## 7. Audit the GitHub settings
+
+Skip this step for a private repo, where these features can require a paid plan, and for a repo not on GitHub yet. Without `gh`, give the owner the list below to check under Settings. Start by reading the current state, which changes nothing (`gh` fills in `{owner}` and `{repo}` from the current repo):
+
+```bash
+gh api repos/{owner}/{repo} --jq .security_and_analysis
+gh api repos/{owner}/{repo}/private-vulnerability-reporting
+gh api repos/{owner}/{repo}/immutable-releases
+```
+
+Report what is off and offer to enable it. Each item changes the live repo, so apply only what the owner approves:
+
+- Secret scanning and push protection: run `gh api -X PATCH repos/{owner}/{repo} --input <file>` on a file holding `{"security_and_analysis": {"secret_scanning": {"status": "enabled"}, "secret_scanning_push_protection": {"status": "enabled"}}}`. Repo-level push protection is off by default, and the owner's account-level protection only covers their own pushes.
+- Dependabot security updates: `gh api -X PUT repos/{owner}/{repo}/vulnerability-alerts`, then the same call on `automated-security-fixes`. The `cooldown` of step 4 does not delay these.
+- Private vulnerability reporting: `gh api -X PUT repos/{owner}/{repo}/private-vulnerability-reporting`, which gives a reporter a private channel instead of a public issue.
+- Immutable releases: `gh api -X PUT repos/{owner}/{repo}/immutable-releases`, only for a repo that publishes Releases. Tell the owner the cost first: a published tag can no longer move, and a workflow that attaches files after publication stops working (`releasing` step 4).
